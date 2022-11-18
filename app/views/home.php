@@ -1,13 +1,9 @@
 <?php
 
-
-/** @var App\Entity\User $post */
-/** @var App\Entity\Post[] $post */
-
 foreach ($posts as $post) :
-
 ?>
-    <p><?= var_dump($post) ?></p>
+
+    <p style="border: 1px solid black;padding:1rem;"><?= $post->getContent() ?></p>
 
 <?php endforeach ?>
 

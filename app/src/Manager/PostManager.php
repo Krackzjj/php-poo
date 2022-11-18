@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Post;
+use App\Factory\PDOFactory;
 
 class PostManager extends BaseManager
 {
@@ -23,16 +24,20 @@ class PostManager extends BaseManager
         return $posts;
     }
 
-    public function getPostById($id): ?Post
+    public function getPostById($id): ?array
     {
-        $query = $this->pdo->prepare("SELECT Post.id, Post.content,User.username FROM Post INNER JOIN User ON Post.author_id = User.id WHERE Post.id = :id");
+
+        $query = $this->pdo->prepare("SELECT content,author_id,username FROM Post JOIN User ON author_id = User.id WHERE Post.id = :id");
         $query->bindValue('id', $id, \PDO::PARAM_INT);
         $query->execute();
         $data = $query->fetch(\PDO::FETCH_ASSOC);
+
         $post = new Post($data);
+        $username = $data['username'];
+
 
         if ($post) {
-            return $post;
+            return compact('post', 'username');;
         }
         return null;
     }

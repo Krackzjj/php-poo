@@ -7,13 +7,14 @@ use App\Interfaces\UserInterface;
 
 class User extends BaseEntity implements UserInterface, PasswordProtectedInterface
 {
-    private ?int $id;
-    private string $username;
-    private string $password;
-    private string $email;
-    private string $firstName = '';
-    private string $lastName = '';
-    private ?string $gender = '';
+    private ?int $id = null;
+    private ?string $username = null;
+    private ?string $password = null;
+    private ?string $email = null;
+    private ?string $firstName = null;
+    private ?string $lastName = null;
+    private ?string $gender = null;
+    private array $roles = [];
 
     /**
      * @return int
@@ -122,7 +123,11 @@ class User extends BaseEntity implements UserInterface, PasswordProtectedInterfa
         $this->gender = $gender;
         return $this;
     }
-
+    /**
+     * Check if the password in bdd match with the password entered
+     * 
+     * @return bool
+     */
     public function passwordMatch(string $plainPwd): bool
     {
         $hash = $this->getHashedPassword();
@@ -130,16 +135,63 @@ class User extends BaseEntity implements UserInterface, PasswordProtectedInterfa
             return false;
         }
         return true;
-        //@TODO
     }
-
+    /**
+     * Get the value of hashed password
+     * 
+     * @return string
+     */
     public function getHashedPassword(): string
     {
         return $this->password;
     }
+    /**
+     * Set the value of hashed password
+     *
+     * @param string
+     * @return self
+     */
     public function setHashedPassword($pwd): User
     {
         $this->password = password_hash($pwd, PASSWORD_DEFAULT);
+        return $this;
+    }
+
+    /**
+     * Get the value of roles
+     * @return array $roles
+     */
+    public function getRoles()
+    {
+        $roles = $this->roles;
+        $roles[] = "ROLE_USER";
+        return $roles;
+    }
+
+    /**
+     * Set the value of roles
+     * 
+     * @param array
+     * @return  self
+     */
+    public function setRoles(array|string $roles): User
+    {
+        if (is_string($roles)) {
+            $roles = json_decode($roles, true);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set the value of password
+     *
+     * @return  self
+     */
+    public function setPassword(string $pwd): User
+    {
+        $this->password = $pwd;
+
         return $this;
     }
 }

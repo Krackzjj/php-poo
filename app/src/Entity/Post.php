@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Factory\PDOFactory;
+use App\Manager\UserManager;
+
 class Post extends BaseEntity
 {
     private int $id;

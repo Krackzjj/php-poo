@@ -1,1 +1,1 @@
-<p>COUCOU</p>
+<h1>Bonjour <?= $user->getUsername(); ?></h1>

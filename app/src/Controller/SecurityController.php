@@ -6,10 +6,11 @@ use App\Entity\User;
 use App\Factory\PDOFactory;
 use App\Manager\UserManager;
 use App\Route\Route;
+use App\Traits\Hydrator;
 
 class SecurityController extends AbstractController
 {
-
+    use Hydrator;
     #[Route('/sign', name: 'sign-in', methods: ['GET', 'POST'])]
     public function newUser()
     {
@@ -20,9 +21,7 @@ class SecurityController extends AbstractController
 
         $user = new User();
 
-        $user->setUsername($username);
-        $user->setHashedPassword($pwd);
-        $user->setEmail($email);
+        $user->hydrate($_POST);
 
 
         $userManager = new UserManager(new PDOFactory());
@@ -42,14 +41,19 @@ class SecurityController extends AbstractController
         $userManager = new UserManager(new PDOFactory());
         $user = $userManager->getByUsername($username);
 
+
+
         if (!$user) {
             header("Location: /?error=notfound");
             exit;
         }
 
         if ($user->passwordMatch($pwd)) {
-
-            $this->render("users/showUsers.php",);
+            // echo '<pre>';
+            // var_dump($user);
+            // echo '</pre>';
+            // die();
+            $this->render("users/showUsers.php", ['user' => $user]);
         }
 
         header("Location: /?error=notfound");

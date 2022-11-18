@@ -1,10 +1,12 @@
 <?php
 
 /** @var App\Entity\Post $post */
-/** @var App\Entity\User $user */
+
 
 ?>
 
 <h1><?= $title ?></h1>
-<p><?= $post->getContent() ?></p>
-<em><?= var_dump($post) ?></em>
+<p><?php echo $post['post']->getContent(); ?></p>
+<p><?php echo $post['username']; ?></p>
+
+<p>Commentaires :</p>
