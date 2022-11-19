@@ -6,7 +6,8 @@
 ?>
 
 <h1><?= $title ?></h1>
-<p><?php echo $post['post']->getContent(); ?></p>
-<p><?php echo $post['username']; ?></p>
-
+<em><b><?php echo $author ?></b></em>
+<hr>
+<p><?php echo $post->getContent() ?></p>
+<hr>
 <p>Commentaires :</p>

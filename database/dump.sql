@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS `Post`
     id      INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     content TEXT,
     author_id INT,
-    comments INT
 );
 
 CREATE TABLE IF NOT EXISTS `Comment`
@@ -34,7 +33,6 @@ CREATE TABLE IF NOT EXISTS `Comments`
 
 ALTER TABLE Post
     ADD CONSTRAINT FK_author_id FOREIGN KEY (author_id) REFERENCES User(id),
-        CONSTRAINT FK_comment_id FOREIGN KEY (comment_id) REFERENCES Comment(id);
 ALTER TABLE Comment
     ADD CONSTRAINT FK_author_id FOREIGN KEY (author_id) REFERENCES User(id),
         CONSTRAINT FK_post_id FOREIGN KEY (post_id) REFERENCES Post(id);

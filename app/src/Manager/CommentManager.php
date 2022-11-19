@@ -28,7 +28,7 @@ class CommentManager extends BaseManager
     {
 
         $query = $this->pdo->prepare("select * from Comment join Comments on post_id = Comments.post_id where post_id = :post_id");
-        $query->bindParam('post_id', $post_id, \PDO::PARAM_INT);
+        $query->bindValue('post_id', $post_id, \PDO::PARAM_INT);
         $query->execute();
 
         $comments = [];

@@ -7,10 +7,10 @@ use App\Manager\UserManager;
 
 class Post extends BaseEntity
 {
-    private int $id;
-    private string $content;
-    private int $author_id;
-    private int $comment_id;
+    private ?int $id = null;
+    private ?string $content = null;
+    private ?int $author_id = null;
+    private ?int $comment_id = null;
 
     /**
      * Get the value of comment_id

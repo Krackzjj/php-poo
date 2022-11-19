@@ -15,7 +15,7 @@ class SecurityController extends AbstractController
     public function newUser()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $this->render('users/sign.php');
+            $this->render('users/sign');
         }
         strip_tags(extract($_POST));
 
@@ -35,7 +35,7 @@ class SecurityController extends AbstractController
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $this->render('users/login.php');
+            $this->render('users/login');
         }
         strip_tags(extract($_POST));
         $userManager = new UserManager(new PDOFactory());
@@ -53,7 +53,7 @@ class SecurityController extends AbstractController
             // var_dump($user);
             // echo '</pre>';
             // die();
-            $this->render("users/showUsers.php", ['user' => $user]);
+            $this->render("users/showUsers", ['user' => $user]);
         }
 
         header("Location: /?error=notfound");
