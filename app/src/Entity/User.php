@@ -164,7 +164,6 @@ class User extends BaseEntity implements UserInterface, PasswordProtectedInterfa
     public function getRoles()
     {
         $roles = $this->roles;
-        $roles[] = "ROLE_USER";
         return $roles;
     }
 

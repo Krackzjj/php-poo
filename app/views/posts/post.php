@@ -1,13 +1,11 @@
-<?php
+<div class="container">
+    <header class="container d-flex flex-column">
+        <h2><?= $title ?></h2>
+        <img width="300px" src="<?= $post->getImg() ?>" alt="">
+    </header>
+    <div class="container">
 
-/** @var App\Entity\Post $post */
+    </div>
+    <a href="/" class="btn btn-primary">Retour</a>
 
-
-?>
-
-<h1><?= $title ?></h1>
-<em><b><?php echo $author ?></b></em>
-<hr>
-<p><?php echo $post->getContent() ?></p>
-<hr>
-<p>Commentaires :</p>
+</div>

@@ -12,23 +12,26 @@ CREATE TABLE IF NOT EXISTS `User`
 
 CREATE TABLE IF NOT EXISTS `Post`
 (
-    id      INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    content TEXT,
-    author_id INT,
+    id          INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    content     TEXT,
+    author_id   INT NOT NULL,
+    created_at  VARCHAR(255) NOT NULL,
+    img         TEXT
+
 );
 
 CREATE TABLE IF NOT EXISTS `Comment`
 (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    content TEXT,
-    author_id INT,
-    post_id INT
+    id          INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    content     TEXT,
+    author_id   INT,
+    post_id     INT
 );
 
-CREATE TABLE IF NOT EXISTS `Comments`
+CREATE TABLE IF NOT EXISTS `Comment_mid`
 (
-    post_id INT NOT NULL,
-    comment_id INT NOT NULL
+    post_id     INT NOT NULL,
+    comment_id  INT NOT NULL
 );
 
 ALTER TABLE Post

@@ -18,7 +18,6 @@ class SecurityController extends AbstractController
             $this->render('users/sign');
         }
         strip_tags(extract($_POST));
-
         $user = new User();
 
         $user->hydrate($_POST);
@@ -26,6 +25,7 @@ class SecurityController extends AbstractController
 
         $userManager = new UserManager(new PDOFactory());
         $userManager->insertUser($user);
+
         header('location: /');
         exit;
     }
@@ -34,6 +34,7 @@ class SecurityController extends AbstractController
     #[Route('/login', name: "login", methods: ["GET", "POST"])]
     public function login()
     {
+
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $this->render('users/login');
         }
@@ -49,14 +50,18 @@ class SecurityController extends AbstractController
         }
 
         if ($user->passwordMatch($pwd)) {
-            // echo '<pre>';
-            // var_dump($user);
-            // echo '</pre>';
-            // die();
+            $_SESSION['auth'] = $user->getId();
             $this->render("users/showUsers", ['user' => $user]);
         }
 
         header("Location: /?error=notfound");
+        exit;
+    }
+    #[Route('/logout', name: 'logout', methods: ['GET'])]
+    public function logout()
+    {
+        session_destroy();
+        header('location: /');
         exit;
     }
 }

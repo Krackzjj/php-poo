@@ -6,6 +6,9 @@ abstract class AbstractController
 {
     public function __construct(string $action, array $params = [])
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         if (!is_callable([$this, $action])) {
             throw new \RuntimeException("La methode $action n'est pas disponible dans ce controller");
         }

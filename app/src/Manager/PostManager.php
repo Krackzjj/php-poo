@@ -3,7 +3,6 @@
 namespace App\Manager;
 
 use App\Entity\Post;
-use App\Factory\PDOFactory;
 
 class PostManager extends BaseManager
 {
@@ -24,10 +23,10 @@ class PostManager extends BaseManager
         return $posts;
     }
 
-    public function getPostById($id): ?Post
+    public function getPostById(int $id): ?Post
     {
 
-        $query = $this->pdo->prepare("SELECT content,author_id FROM Post WHERE Post.id = :id");
+        $query = $this->pdo->prepare("SELECT * FROM Post WHERE Post.id = :id");
         $query->bindValue('id', $id, \PDO::PARAM_INT);
         $query->execute();
         $data = $query->fetch(\PDO::FETCH_ASSOC);
@@ -42,9 +41,17 @@ class PostManager extends BaseManager
     }
     public function insertPost(Post $post)
     {
-        $query = $this->pdo->prepare('INSERT INTO Post (content, author_id) VALUES (:content,:author_id)');
+        $query = $this->pdo->prepare('INSERT INTO Post (content,author_id,created_at,img) VALUES (:content,:author_id,:created_at,:img)');
         $query->bindValue('content', $post->getContent(), \PDO::PARAM_STR);
-        $query->bindValue('author_id', $post->getAuthor_id(), \PDO::PARAM_STR);
+        $query->bindValue('author_id', $post->getAuthor_id(), \PDO::PARAM_INT);
+        $query->bindValue('created_at', $post->getCreated_at(), \PDO::PARAM_STR);
+        $query->bindValue('img', $post->getImg(), \PDO::PARAM_STR);
+        $query->execute();
+    }
+    public function deletePost(int $id)
+    {
+        $query = $this->pdo->prepare('DELETE FROM Post WHERE id = :id');
+        $query->bindValue('id', $id, \PDO::PARAM_INT);
         $query->execute();
     }
 }

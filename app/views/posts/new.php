@@ -1,5 +1,11 @@
-<h1>Nouveau Post</h1>
-<form method="post">
-    <textarea name="content" id="content" cols="150" rows="30" placeholder="Text Here"></textarea>
-    <input type="submit">
-</form>
+<div class="container">
+    <header>
+        <h1>Nouveau Post</h1>
+    </header>
+    <!-- @TODO ajouté enctype/ -->
+    <form method="POST" class="w-100 d-flex flex-column">
+        <textarea name="content" id="content" cols="150" rows="30" placeholder="Text Here"></textarea>
+        <input name="img" id="img" type="text" placeholder="lien vers l'image" class="mt-2">
+        <input type="submit" class="btn btn-dark mt-2 w-25">
+    </form>
+</div>

@@ -10,32 +10,14 @@ class Post extends BaseEntity
     private ?int $id = null;
     private ?string $content = null;
     private ?int $author_id = null;
-    private ?int $comment_id = null;
+    private ?string $created_at = null;
+    private ?string $img = null;
 
-    /**
-     * Get the value of comment_id
-     */
-    public function getComment_id()
-    {
-        return $this->comment_id;
-    }
-
-    /**
-     * Set the value of comment_id
-     *
-     * @return  self
-     */
-    public function setComment_id($comment_id)
-    {
-        $this->comment_id = $comment_id;
-
-        return $this;
-    }
 
     /**
      * Get the value of author_id
      */
-    public function getAuthor_id()
+    public function getAuthor_id(): int
     {
         return $this->author_id;
     }
@@ -43,9 +25,9 @@ class Post extends BaseEntity
     /**
      * Set the value of author_id
      *
-     * @return  self
+     * @return  User
      */
-    public function setAuthor_id($author_id)
+    public function setAuthor_id($author_id): Post
     {
         $this->author_id = $author_id;
 
@@ -55,7 +37,7 @@ class Post extends BaseEntity
     /**
      * Get the value of content
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -63,9 +45,9 @@ class Post extends BaseEntity
     /**
      * Set the value of content
      *
-     * @return  self
+     * @return  User
      */
-    public function setContent($content)
+    public function setContent($content): Post
     {
         $this->content = $content;
 
@@ -75,7 +57,7 @@ class Post extends BaseEntity
     /**
      * Get the value of id
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -83,11 +65,51 @@ class Post extends BaseEntity
     /**
      * Set the value of id
      *
-     * @return  self
+     * @return  User
      */
-    public function setId($id)
+    public function setId(int $id): Post
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of created_at
+     */
+    public function getCreated_at(): string
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * Set the value of created_at
+     *
+     * @return  User
+     */
+    public function setCreated_at(string $created_at): Post
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of img
+     */
+    public function getImg(): string
+    {
+        return $this->img;
+    }
+
+    /**
+     * Set the value of img
+     *
+     * @return  self
+     */
+    public function setImg($img): Post
+    {
+        $this->img = $img;
 
         return $this;
     }

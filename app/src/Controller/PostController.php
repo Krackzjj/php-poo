@@ -15,8 +15,9 @@ class PostController extends AbstractController
     #[Route('/', name: "homepage", methods: ["GET"])]
     public function home()
     {
-        $manager = new PostManager(new PDOFactory());
-        $posts = $manager->getAllPosts();
+        $postManager = new PostManager(new PDOFactory());
+
+        $posts = $postManager->getAllPosts();
 
         $this->render("home", [
             "posts" => $posts,
@@ -34,13 +35,13 @@ class PostController extends AbstractController
         $userManager = new UserManager(new PDOFactory());
 
         $post = $postManager->getPostById($id);
-        $author = $userManager->getByUserbyId($post->getAuthor_id())->getUsername();
+        $author = $userManager->getUserbyId($post->getAuthor_id())->getUsername();
+
 
         if (!$post) {
             header('location: /?error=notfound');
             exit;
         }
-
         $this->render('posts/post', [
             "post" => $post,
             "author" => $author,
@@ -48,25 +49,69 @@ class PostController extends AbstractController
         ]);
     }
     /**
+     * @param $id
+     * @return void
+     */
+    #[Route('/post/{id}/update', name: "update-post", methods: ["GET", "PUT"])]
+    public function updatePost($id)
+    {
+        $postManager = new PostManager(new PDOFactory());
+        $userManager = new UserManager(new PDOFactory());
+
+        $post = $postManager->getPostById($id);
+        $author = $userManager->getUserbyId($post->getAuthor_id())->getUsername();
+
+        if (!$post) {
+            header('location: /?error=notfound');
+            exit;
+        }
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $this->render('posts/modify', [
+                "post" => $post,
+                "author" => $author,
+                "title" => "Post n°" . $id
+            ]);
+        }
+    }
+    /**
      *     * @return void
      */
-    #[Route('/new', name: "post-id", methods: ["GET", "POST"])]
+    #[Route('/new', name: "new-post", methods: ["GET", "POST"])]
     public function insertPost()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $this->render('posts/new');
         }
-        $content = strip_tags($_POST['content']);
-        $author_id = 1;
-        //@TODO doit venir de la session
+        $postManager = new PostManager(new PDOFactory());
 
         $post = new Post();
+        $content = $_POST['content'];
+        $author_id = $_SESSION['auth'];
+        $date = new \DateTime();
+        $created_at = $date->format('d-m-Y');
+        $img = $_POST['img'];
 
-        $post->hydrate(compact('content', 'author_id'));
+
+        $post->hydrate(['content' => $content, 'author_id' => $author_id, 'created_at' => $created_at, 'img' => $img]);
+
+        $postManager->insertPost($post);
+
+        header("location: /");
+        exit;
+    }
+    /**
+     *     * @return void
+     */
+    #[Route('/post/{id}/delete', name: "delete-post", methods: ["GET"])]
+    public function deletePost($id)
+    {
+        //@TODO restreindre au role Admin
+        $userManager =  new UserManager(new PDOFactory());
+        // if($userManager->getUserbyId($_SESSION['auth'])->getRoles())
 
         $postManager = new PostManager(new PDOFactory());
-        $postManager->insertPost($post);
-        header('location: /');
+        $postManager->deletePost($id);
+        header("location: /");
         exit;
     }
 }
