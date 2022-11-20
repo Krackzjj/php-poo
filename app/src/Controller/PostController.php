@@ -35,8 +35,9 @@ class PostController extends AbstractController
         $userManager = new UserManager(new PDOFactory());
 
         $post = $postManager->getPostById($id);
-        $author = $userManager->getUserbyId($post->getAuthor_id())->getUsername();
+        $user = $userManager->getUserbyId($post->getAuthor_id());
 
+        $author = $user == null ? 'ANON' : $user->getUsername();
 
         if (!$post) {
             header('location: /?error=notfound');
@@ -52,26 +53,10 @@ class PostController extends AbstractController
      * @param $id
      * @return void
      */
-    #[Route('/post/{id}/update', name: "update-post", methods: ["GET", "PUT"])]
+    #[Route('/post/{id}/update', name: "update-post", methods: ["GET", "POST"])]
     public function updatePost($id)
     {
-        $postManager = new PostManager(new PDOFactory());
-        $userManager = new UserManager(new PDOFactory());
-
-        $post = $postManager->getPostById($id);
-        $author = $userManager->getUserbyId($post->getAuthor_id())->getUsername();
-
-        if (!$post) {
-            header('location: /?error=notfound');
-            exit;
-        }
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $this->render('posts/modify', [
-                "post" => $post,
-                "author" => $author,
-                "title" => "Post n°" . $id
-            ]);
-        }
+        //@todo
     }
     /**
      *     * @return void
@@ -105,12 +90,31 @@ class PostController extends AbstractController
     #[Route('/post/{id}/delete', name: "delete-post", methods: ["GET"])]
     public function deletePost($id)
     {
-        //@TODO restreindre au role Admin
         $userManager =  new UserManager(new PDOFactory());
-        // if($userManager->getUserbyId($_SESSION['auth'])->getRoles())
+        $userRole = $userManager->getUserbyId($_SESSION['auth'])->getRoles();
+        if ($userRole['ROLES'] == 'ADMIN') {
+            $postManager = new PostManager(new PDOFactory());
+            $postManager->deletePost($id);
+        }
+        if (isset($_GET['admin'])) {
+            header('location: /posts');
+            exit;
+        }
+        header("location: /");
+        exit;
+    }
+    #[Route('/posts', name: "all-posts", methods: ["GET"])]
+    public function posts()
+    {
+        $userManager =  new UserManager(new PDOFactory());
+        $userRole = $userManager->getUserbyId($_SESSION['auth'])->getRoles();
 
-        $postManager = new PostManager(new PDOFactory());
-        $postManager->deletePost($id);
+        if ($userRole['ROLE'] == 'ADMIN') {
+            $postManager = new PostManager(new PDOFactory());
+            $posts = $postManager->getAllPosts();
+            $this->render('admin/listPosts', compact('posts', 'userRole'));
+        }
+
         header("location: /");
         exit;
     }

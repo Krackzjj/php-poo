@@ -8,6 +8,8 @@
         <span class="badge text-bg-dark"><?php echo $author ?></span>
         <p><?= $post->getContent() ?></p>
     </div>
-    <a href="/" class="btn btn-primary">Retour</a>
-
+    <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+    <?php if (isset($_GET['admin'])) : ?>
+        <a href="/posts" class="btn btn-primary mx-2">Retour à la liste</a>
+    <?php endif; ?>
 </div>

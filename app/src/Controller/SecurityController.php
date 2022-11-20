@@ -18,7 +18,7 @@ class SecurityController extends AbstractController
             $this->render('users/sign');
         }
         strip_tags(extract($_POST));
-        $roles = ["roles" => json_encode(['role' => 'USER'])];
+        $roles = ["ROLES" => json_encode(['ROLE' => 'USER'])];
         $arr = array_merge($_POST, $roles);
 
 
@@ -56,7 +56,7 @@ class SecurityController extends AbstractController
 
         if ($user->passwordMatch($pwd)) {
             $_SESSION['auth'] = $user->getId();
-            $this->render("users/showUsers", ['user' => $user]);
+            $this->render('users/showUsers', ['user' => $user]);
         }
 
         header("Location: /?error=notfound");
@@ -70,16 +70,15 @@ class SecurityController extends AbstractController
         header('location: /');
         exit;
     }
-
-    #[Route('/users', name: 'all-users', methods: ['GET', 'POST'])]
-    public function users()
+    #[Route('/account', name: 'account', methods: ['GET'])]
+    public function account()
     {
         $userManager = new UserManager(new PDOFactory());
-        $userRole = $userManager->getUserbyId($_SESSION['auth'])->getRoles();
 
-        if ($userRole['role'] == 'ADMIN') {
-            die('ok');
+        if (isset($_SESSION)) {
+            $user = $userManager->getUserbyId($_SESSION['auth']);
+            $this->render('users/showUsers', compact('user'));
         }
-        die("t'est user DOMMAGE");
+        header('location: /?error=notfound');
     }
 }

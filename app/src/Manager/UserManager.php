@@ -62,4 +62,10 @@ class UserManager extends BaseManager
         $query->bindValue("roles", json_encode($user->getRoles()), \PDO::PARAM_STR);
         $query->execute();
     }
+    public function deleteUser(int $id)
+    {
+        $query = $this->pdo->prepare("DELETE FROM User WHERE id =:id");
+        $query->bindValue('id', $id, \PDO::PARAM_INT);
+        $query->execute();
+    }
 }
