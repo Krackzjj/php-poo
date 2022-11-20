@@ -9,6 +9,9 @@
     <?php } elseif (isset($_SESSION['auth'])) { ?>
         <div class="w-100 d-flex justify-content-between">
             <a href="/account" class='btn btn-primary mx-1 mt-1'>Mon Compte</a>
+            <div>
+                <a href="<?= isset($_SESSION['auth']) ? '/new' : '' ?>" class="btn btn-primary<?= isset($_SESSION['auth']) ? '' : ' disabled' ?>">Nouveau</a>
+            </div>
             <a href='/logout' class='btn btn-danger mx-1 mt-1 '>Déconnexion</a>
         </div>
     <?php } else { ?>
@@ -18,13 +21,20 @@
     <?php
     foreach ($posts as $post) :
     ?>
-        <div class="border p-2 mt-1">
-            <span class="badge text-bg-info"><?php echo $post->getCreated_at() ?></span>
-            <p><?= substr($post->getContent(), 0, 350) . '...' ?></p>
-            <a href="/post/<?php echo $post->getId() ?>" class="btn btn-primary btn-sm">Lire la suite</a>
+        <div class="container border p-2 mt-1">
+            <div class="row">
+                <div class="col-2">
+                    <img class="img-thumbnail" style="height:100%;" src="<?= $post->getImg()  ?>" alt="">
+                </div>
+                <div class="col-10">
+                    <h4><?= $post->getTitle() ?></h4>
+                    <div class="d-flex gap-1 w-25">
+                        <span class="badge text-bg-info"><?php echo $post->getCreated_at() ?></span>
+                    </div>
+                    <p><?= substr($post->getContent(), 0, 350) . '...' ?></p>
+                    <a href="/post/<?php echo $post->getId() ?>" class="btn btn-primary btn-sm">Lire la suite</a>
+                </div>
+            </div>
         </div>
 
     <?php endforeach; ?>
-    <div class="d-flex justify-content-end mt-3">
-        <a href="<?= isset($_SESSION['auth']) ? '/new' : '' ?>" class="btn btn-primary<?= isset($_SESSION['auth']) ? '' : ' disabled' ?> mx-2">Nouveau</a>
-    </div>

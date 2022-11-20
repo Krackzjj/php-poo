@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\User;
 use App\Factory\PDOFactory;
 use App\Manager\PostManager;
 use App\Manager\UserManager;
@@ -19,8 +20,9 @@ class PostController extends AbstractController
 
         $posts = $postManager->getAllPosts();
 
+
         $this->render("home", [
-            "posts" => $posts,
+            "posts" => $posts
         ], "Tous les posts");
     }
 
@@ -86,7 +88,7 @@ class PostController extends AbstractController
         extract($_POST);
         $author_id = $_SESSION['auth'];
         $date = new \DateTime();
-        $created_at = $date->format('d-m-Y');
+        $created_at = $date->format('d-m-Y H-i-s');
 
 
 
@@ -94,7 +96,9 @@ class PostController extends AbstractController
 
         $postManager->insertPost($post);
 
-        header("location: /");
+        $lastpost = $postManager->getLastPostbyAuthorID($_SESSION['auth']);
+
+        header("location: /post/" . $lastpost->getId());
         exit;
     }
     /**

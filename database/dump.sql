@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `Post`
     content     TEXT,
     author_id   INT NOT NULL,
     created_at  VARCHAR(255) NOT NULL,
-    img         TEXT
+    img         TEXT,
 
 );
 
@@ -26,13 +26,15 @@ CREATE TABLE IF NOT EXISTS `Comment`
     id          INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     content     TEXT,
     author_id   INT,
-    post_id     INT
+    post_id     INT NOT NULL, -- -> id (post)
+    rep         INT -- ->id (comment)
 );
 
 CREATE TABLE IF NOT EXISTS `Comment_mid`
 (
-    post_id     INT NOT NULL,
-    comment_id  INT NOT NULL
+    post_id     INT NOT NULL, -- -> id (post)
+    comment_id  INT NOT NULL, -- -> id (comment)
+    rep_id      INT             -- ->id(comment)
 );
 
 ALTER TABLE Post

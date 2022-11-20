@@ -26,7 +26,7 @@ class PostManager extends BaseManager
     public function getPostById(int $id): ?Post
     {
 
-        $query = $this->pdo->prepare("SELECT * FROM Post WHERE Post.id = :id");
+        $query = $this->pdo->prepare("SELECT * FROM Post WHERE id = :id");
         $query->bindValue('id', $id, \PDO::PARAM_INT);
         $query->execute();
         $data = $query->fetch(\PDO::FETCH_ASSOC);
@@ -64,5 +64,19 @@ class PostManager extends BaseManager
         $query->bindValue('title', $title, \PDO::PARAM_STR);
         $query->bindValue('img', $img, \PDO::PARAM_STR);
         $query->execute();
+    }
+    public function getLastPostbyAuthorID(int $id)
+    {
+        $query = $this->pdo->prepare('SELECT * FROM Post WHERE author_id = :id ORDER BY id DESC LIMIT 1');
+        $query->bindValue('id', $id, \PDO::PARAM_INT);
+        $query->execute();
+        $data = $query->fetch(\PDO::FETCH_ASSOC);
+
+        $post = new Post($data);
+
+        if ($post) {
+            return $post;
+        }
+        return null;
     }
 }

@@ -21,7 +21,12 @@
         <?php endforeach; ?>
     </tbody>
 </table>
-<div class="d-flex gap-1 mx-2">
-    <a href="/" class="btn btn-primary">Retour à l'accueil</a>
-    <a href="/account" class="btn btn-primary">Retour</a>
+<div class="w-100 mt-2">
+    <div class="mx-2 my-2">
+        <a href="/new" class="btn btn-primary">AJOUTER</a>
+    </div>
+    <div class="mx-2">
+        <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+        <a href="/account" class="btn btn-primary">Retour</a>
+    </div>
 </div>
