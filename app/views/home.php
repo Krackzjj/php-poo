@@ -2,6 +2,7 @@
         <h1>Tous les Posts</h1>
     </header>
     <?php
+
     if (isset($_GET['connect'])) { ?>
         <div class="alert alert-success">Compte utilisateur créé avec succès</div>
         <a href='/login' class='btn btn-success mx-1 mt-1'>Connexion</a>
@@ -25,5 +26,5 @@
 
     <?php endforeach; ?>
     <div class="d-flex justify-content-end mt-3">
-        <a href="<?= isset($_SESSION['auth']) ? '/new' : '' ?>" class="btn btn-primary<?= isset($_SESSION['auth']) ? '' : ' disabled' ?>">Nouveau</a>
+        <a href="<?= isset($_SESSION['auth']) ? '/new' : '' ?>" class="btn btn-primary<?= isset($_SESSION['auth']) ? '' : ' disabled' ?> mx-2">Nouveau</a>
     </div>

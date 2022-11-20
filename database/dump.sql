@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `User`
 CREATE TABLE IF NOT EXISTS `Post`
 (
     id          INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    title       VARCHAR(255) NOT NULL,
     content     TEXT,
     author_id   INT NOT NULL,
     created_at  VARCHAR(255) NOT NULL,

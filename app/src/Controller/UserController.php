@@ -14,7 +14,7 @@ class UserController extends AbstractController
         $manager = new UserManager(new PDOFactory());
         $user = $manager->getByUsername($username);
     }
-    #[Route('/users', name: 'all-users', methods: ['GET', 'POST'])]
+    #[Route('/users', name: 'all-users', methods: ['GET'])]
     public function users()
     {
         $userManager = new UserManager(new PDOFactory());
@@ -42,6 +42,30 @@ class UserController extends AbstractController
             $userManager->deleteUser($id);
         }
         header('location:' . $_SERVER['HTTP_REFERER']);
+        exit;
+    }
+    #[Route('/users/{id}/update', name: 'update-user', methods: ['GET', 'POST'])]
+    public function updateUser($id)
+    {
+
+        $userManager =  new UserManager(new PDOFactory());
+        $user = $userManager->getUserbyId($id);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $this->render('users/modify', compact('user'));
+        }
+        $email = ['email' => $user->getEmail()];
+        $data = array_merge($_POST, $email);
+        $userManager->updateUser($id, $data);
+        if ($userManager->getUserbyId($_SESSION['auth'])->getRoles()['ROLE'] == 'ADMIN') {
+            if (preg_match('/account/', $_SERVER['HTTP_REFERER'])) {
+                header('location: /account');
+                exit;
+            }
+            header('location: /users');
+            exit;
+        }
+        header('location: /account');
         exit;
     }
 }

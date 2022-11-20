@@ -41,7 +41,8 @@ class PostManager extends BaseManager
     }
     public function insertPost(Post $post)
     {
-        $query = $this->pdo->prepare('INSERT INTO Post (content,author_id,created_at,img) VALUES (:content,:author_id,:created_at,:img)');
+        $query = $this->pdo->prepare('INSERT INTO Post (title,content,author_id,created_at,img) VALUES (:title,:content,:author_id,:created_at,:img)');
+        $query->bindValue('title', $post->getTitle(), \PDO::PARAM_STR);
         $query->bindValue('content', $post->getContent(), \PDO::PARAM_STR);
         $query->bindValue('author_id', $post->getAuthor_id(), \PDO::PARAM_INT);
         $query->bindValue('created_at', $post->getCreated_at(), \PDO::PARAM_STR);
@@ -52,6 +53,16 @@ class PostManager extends BaseManager
     {
         $query = $this->pdo->prepare('DELETE FROM Post WHERE id = :id');
         $query->bindValue('id', $id, \PDO::PARAM_INT);
+        $query->execute();
+    }
+    public function updatePost(int $id, array $data)
+    {
+        extract($data);
+        $query = $this->pdo->prepare('UPDATE Post SET content = :content,img = :img,title=:title WHERE id = :id');
+        $query->bindValue('id', $id, \PDO::PARAM_INT);
+        $query->bindValue('content', $content, \PDO::PARAM_STR);
+        $query->bindValue('title', $title, \PDO::PARAM_STR);
+        $query->bindValue('img', $img, \PDO::PARAM_STR);
         $query->execute();
     }
 }

@@ -35,6 +35,11 @@ class PostController extends AbstractController
         $userManager = new UserManager(new PDOFactory());
 
         $post = $postManager->getPostById($id);
+        if (isset($_SESSION['auth'])) {
+            $isAdmin = $userManager->getUserbyId($_SESSION['auth'])->getRoles()['ROLE'] == 'ADMIN' ? true : false;
+        } else {
+            $isAdmin = false;
+        }
         $user = $userManager->getUserbyId($post->getAuthor_id());
 
         $author = $user == null ? 'ANON' : $user->getUsername();
@@ -43,20 +48,28 @@ class PostController extends AbstractController
             header('location: /?error=notfound');
             exit;
         }
-        $this->render('posts/post', [
-            "post" => $post,
-            "author" => $author,
-            "title" => 'Post n°' . $id
-        ]);
+        $this->render('posts/post', compact('post', 'author', 'isAdmin'));
+        if (isset($_GET['admin'])) {
+            header('location:/posts');
+        }
     }
     /**
      * @param $id
      * @return void
      */
     #[Route('/post/{id}/update', name: "update-post", methods: ["GET", "POST"])]
-    public function updatePost($id)
+    public function updatePost(int $id)
     {
-        //@todo
+        $postManager = new PostManager(new PDOFactory());
+        $post = $postManager->getPostById($id);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $this->render('posts/modify', compact('post'));
+        }
+
+        $postManager->updatePost($id, $_POST);
+        header('location: /post/' . $id . '?admin');
+        exit;
     }
     /**
      *     * @return void
@@ -70,14 +83,14 @@ class PostController extends AbstractController
         $postManager = new PostManager(new PDOFactory());
 
         $post = new Post();
-        $content = $_POST['content'];
+        extract($_POST);
         $author_id = $_SESSION['auth'];
         $date = new \DateTime();
         $created_at = $date->format('d-m-Y');
-        $img = $_POST['img'];
 
 
-        $post->hydrate(['content' => $content, 'author_id' => $author_id, 'created_at' => $created_at, 'img' => $img]);
+
+        $post->hydrate(compact('title', 'content', 'author_id', 'created_at', 'img'));
 
         $postManager->insertPost($post);
 
@@ -92,7 +105,7 @@ class PostController extends AbstractController
     {
         $userManager =  new UserManager(new PDOFactory());
         $userRole = $userManager->getUserbyId($_SESSION['auth'])->getRoles();
-        if ($userRole['ROLES'] == 'ADMIN') {
+        if ($userRole['ROLE'] == 'ADMIN') {
             $postManager = new PostManager(new PDOFactory());
             $postManager->deletePost($id);
         }

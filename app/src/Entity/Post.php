@@ -8,6 +8,7 @@ use App\Manager\UserManager;
 class Post extends BaseEntity
 {
     private ?int $id = null;
+    private ?string $title = null;
     private ?string $content = null;
     private ?int $author_id = null;
     private ?string $created_at = null;
@@ -110,6 +111,26 @@ class Post extends BaseEntity
     public function setImg($img): Post
     {
         $this->img = $img;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the value of title
+     *
+     * @return  self
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
 
         return $this;
     }

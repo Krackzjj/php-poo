@@ -1,11 +1,13 @@
 <h1 class="mx-2">Tous les utilisateurs</h1>
-<table class="table table-striped w-50 m-auto border">
+<table class="table table-striped m-auto w-75 border">
     <thead>
         <tr>
             <th scope="col">ID</th>
             <th scope="col">USERNAME</th>
             <th scope="col">FIRST NAME</th>
             <th scope="col">LAST NAME</th>
+            <th scope="col">STATUS</th>
+            <th scope="col">ACTIONS</th>
         </tr>
     </thead>
     <tbody>
@@ -15,7 +17,10 @@
                 <td><?= $user->getUsername() ?></td>
                 <td><?= $user->getFirstName() ?></td>
                 <td><?= $user->getLastName() ?></td>
-                <td><a href="<?= $user->getId() == $_SESSION['auth'] ? '' : "users/" . $user->getId() . "/delete" ?>" class=" btn btn-danger btn-sm <?= $user->getId() == $_SESSION['auth'] ? 'disabled' : '' ?>">SUPPRIMER</a></td>
+                <td><?= $user->getRoles()['ROLE'] ?></td>
+                <td><a href="<?= $user->getId() == $_SESSION['auth'] ? '' : "users/" . $user->getId() . "/delete" ?>" class=" btn btn-sm <?= $user->getId() == $_SESSION['auth'] ? 'btn-disabled disabled' : 'btn-danger' ?>">SUPPRIMER</a>
+                    <a href="users/<?= $user->getId() ?>/update" class="btn btn-warning btn-sm">EDITER</a>
+                </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
