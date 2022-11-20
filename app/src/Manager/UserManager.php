@@ -59,8 +59,7 @@ class UserManager extends BaseManager
         $query->bindValue("firstName", $user->getFirstName(), \PDO::PARAM_STR);
         $query->bindValue("lastName", $user->getLastName(), \PDO::PARAM_STR);
         $query->bindValue("gender", $user->getGender(), \PDO::PARAM_STR);
-        $query->bindValue("roles", json_encode(['ROLE_USER']), \PDO::PARAM_STR);
+        $query->bindValue("roles", json_encode($user->getRoles()), \PDO::PARAM_STR);
         $query->execute();
-        $_SESSION['auth'] = $user->getUsername();
     }
 }

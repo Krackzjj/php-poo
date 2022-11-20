@@ -130,7 +130,6 @@ class User extends BaseEntity implements UserInterface, PasswordProtectedInterfa
      */
     public function passwordMatch(string $plainPwd): bool
     {
-        $hash = $this->getHashedPassword();
         if (!password_verify($plainPwd, $this->getHashedPassword())) {
             return false;
         }
@@ -176,9 +175,8 @@ class User extends BaseEntity implements UserInterface, PasswordProtectedInterfa
     public function setRoles(array|string $roles): User
     {
         if (is_string($roles)) {
-            $roles = json_decode($roles, true);
+            $this->roles = json_decode($roles, true);
         }
-
         return $this;
     }
 

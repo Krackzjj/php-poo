@@ -18,15 +18,20 @@ class SecurityController extends AbstractController
             $this->render('users/sign');
         }
         strip_tags(extract($_POST));
+        $roles = ["roles" => json_encode(['role' => 'USER'])];
+        $arr = array_merge($_POST, $roles);
+
+
         $user = new User();
 
-        $user->hydrate($_POST);
+        $user->hydrate($arr);
+
 
 
         $userManager = new UserManager(new PDOFactory());
         $userManager->insertUser($user);
 
-        header('location: /');
+        header('location: /?connect');
         exit;
     }
 
@@ -57,11 +62,24 @@ class SecurityController extends AbstractController
         header("Location: /?error=notfound");
         exit;
     }
+
     #[Route('/logout', name: 'logout', methods: ['GET'])]
     public function logout()
     {
         session_destroy();
         header('location: /');
         exit;
+    }
+
+    #[Route('/users', name: 'all-users', methods: ['GET', 'POST'])]
+    public function users()
+    {
+        $userManager = new UserManager(new PDOFactory());
+        $userRole = $userManager->getUserbyId($_SESSION['auth'])->getRoles();
+
+        if ($userRole['role'] == 'ADMIN') {
+            die('ok');
+        }
+        die("t'est user DOMMAGE");
     }
 }
