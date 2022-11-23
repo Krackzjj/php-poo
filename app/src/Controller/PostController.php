@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Post;
-use App\Entity\User;
 use App\Factory\PDOFactory;
+use App\Manager\CommentManager;
 use App\Manager\PostManager;
 use App\Manager\UserManager;
 use App\Route\Route;
@@ -20,9 +20,8 @@ class PostController extends AbstractController
 
         $posts = $postManager->getAllPosts();
 
-
         $this->render("home", [
-            "posts" => $posts
+            "posts" => $posts,
         ], "Tous les posts");
     }
 
@@ -31,26 +30,28 @@ class PostController extends AbstractController
      * @return void
      */
     #[Route('/post/{id}', name: "post-id", methods: ["GET"])]
-    public function postById($id)
+    public function postById(int $id)
     {
         $postManager = new PostManager(new PDOFactory());
         $userManager = new UserManager(new PDOFactory());
 
         $post = $postManager->getPostById($id);
-        if (isset($_SESSION['auth'])) {
-            $isAdmin = $userManager->getUserbyId($_SESSION['auth'])->getRoles()['ROLE'] == 'ADMIN' ? true : false;
-        } else {
-            $isAdmin = false;
-        }
+
         $user = $userManager->getUserbyId($post->getAuthor_id());
 
         $author = $user == null ? 'ANON' : $user->getUsername();
+
+        //commentaires
+        $commentManager = new CommentManager(new PDOFactory());
+        $comments = $commentManager->getAllCommentsByPostId($id);
+        $com_auth = $userManager->getAllUsers();
+
 
         if (!$post) {
             header('location: /?error=notfound');
             exit;
         }
-        $this->render('posts/post', compact('post', 'author', 'isAdmin'));
+        $this->render('posts/post', compact('post', 'author', 'comments', 'com_auth'));
         if (isset($_GET['admin'])) {
             header('location:/posts');
         }

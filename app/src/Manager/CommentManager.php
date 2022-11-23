@@ -6,38 +6,63 @@ use App\Entity\Comment;
 
 class CommentManager extends BaseManager
 {
-    /**
-     * @return Comment[]
-     */
-    public function getAllCommentsbyPostId(): array
+    public function getAllCommentsByPostId(int $id)
     {
-        $query = $this->pdo->query("SELECT * from Comment JOIN Comments ON post_id = post_id WHERE Comment.post_id = :id");
-
-        $comments = [];
-
-        while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $comments[] = new Comment($data);
-        }
-
-        return $comments;
-    }
-    /**
-     * @return Comment[]
-     */
-    public function getCommentsbyPost(int $post_id): array
-    {
-
-        $query = $this->pdo->prepare("select * from Comment join Comments on post_id = Comments.post_id where post_id = :post_id");
-        $query->bindValue('post_id', $post_id, \PDO::PARAM_INT);
+        $query = $this->pdo->prepare(
+            'SELECT c.content,c.id,c.created_at,c.author_id,Post.id,c.parent_com,User.username as username  
+        FROM Comment as c 
+        INNER JOIN Post ON Post.id = c.post_id
+        INNER JOIN User ON User.id = c.author_id 
+        WHERE Post.id = :id'
+        );
+        $query->bindValue('id', $id, \PDO::PARAM_INT);
         $query->execute();
 
         $comments = [];
 
 
         while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $comments[] = new Comment($data);
+            $comment = new Comment($data);
+            $comment->setAuthor_id($data['username']);
+            $comments[] = $comment;
         }
 
         return $comments;
+    }
+    // public function getRepFromComment(int $id)
+    // {
+    //     $query = $this->pdo->prepare(
+    //         'SELECT c.id,c.content,c.created_at,c.author_id,c.parent_com,User.username as username
+    //         FROM Comment as c
+    //         INNER JOIN Comment ON c.parent_com = Comment.id
+    //         INNER JOIN User ON c.author_id = User.id
+    //         WHERE c.id = :id '
+    //     );
+    //     $query->bindValue('id', $id, \PDO::PARAM_INT);
+    //     $query->execute();
+
+    //     $reps = [];
+
+    //     $data = $query->fetch(\PDO::FETCH_ASSOC);
+    //     while ($data) {
+    //         $rep = new Comment($data);
+    //         $rep->setAuthor_id($data['username']);
+    //         $reps[] = $rep;
+    //     }
+    //     return $reps;
+    // }
+    public function getCommentById($id)
+    {
+        $query = $this->pdo->prepare(
+            'SELECT c.id,c.content,c.created_at,c.author_id,c.parent_com,User.username as username
+            FROM Comment as c
+            INNER JOIN User ON c.author_id = User.id
+            WHERE c.id = :id'
+        );
+        $query->bindValue('id', $id, \PDO::PARAM_INT);
+        $query->execute();
+        $data = $query->fetch(\PDO::FETCH_ASSOC);
+
+        return $data ?? null;
     }
 }

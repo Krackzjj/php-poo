@@ -56,6 +56,10 @@ class SecurityController extends AbstractController
 
         if ($user->passwordMatch($pwd)) {
             $_SESSION['auth'] = $user->getId();
+            $_SESSION['username'] = $user->getUsername();
+            if ($userManager->getUserbyId($_SESSION['auth'])->getRoles()['ROLE'] == 'ADMIN') {
+                $_SESSION['ROLE'] = true;
+            }
             $this->render('users/showUsers', ['user' => $user]);
         }
 

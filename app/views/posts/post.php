@@ -12,12 +12,15 @@
 
     <?php
 
-    if (isset($_SESSION['auth']) && $_SESSION['auth'] == $post->getAuthor_id() || $isAdmin == true) : ?>
-        <a href="/post/<?= $post->getId() ?>/modify<?= $isAdmin ? '?admin' : '' ?>" class="btn btn-warning mb-2">EDITER</a>
-        <a href="/post/<?= $post->getId() ?>/delete<?= $isAdmin ? '?admin' : '' ?>" class="btn btn-danger mb-2">SUPPRIMER</a>
-        <?php if ($isAdmin) : ?>
+    if (isset($_SESSION['auth']) && $_SESSION['auth'] == $post->getAuthor_id() || isset($_SESSION['ROLE'])) : ?>
+        <a href="/post/<?= $post->getId() ?>/update<?= isset($_SESSION['ROLE']) ? '?admin' : '' ?>" class="btn btn-warning mb-2">EDITER</a>
+        <a href="/post/<?= $post->getId() ?>/delete<?= isset($_SESSION['ROLE']) ? '?admin' : '' ?>" class="btn btn-danger mb-2">SUPPRIMER</a>
+        <?php if (isset($_SESSION['ROLE'])) : ?>
             <a href="/posts" class="btn btn-primary mb-2">Retour à la liste</a>
         <?php endif; ?>
     <?php endif; ?>
     <a href="/" class="btn btn-primary mb-2">Retour à l'accueil</a>
+    <h3>Commentaires :</h3>
+
+</div>
 </div>
