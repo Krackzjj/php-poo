@@ -4,18 +4,18 @@ namespace App\Entity;
 
 class Post extends BaseEntity
 {
-    private ?int $id = null;
-    private ?string $title = null;
-    private ?string $content = null;
-    private int|string $author_id;
-    private ?string $created_at = null;
-    private ?string $img = null;
+    private ?int        $id         = null;
+    private ?string     $title      = null;
+    private ?string     $content    = null;
+    private ?int        $author_id  = null;
+    private ?string     $created_at = null;
+    private ?string     $img        = null;
 
 
     /**
      * Get the value of author_id
      */
-    public function getAuthor_id(): int|string
+    public function getAuthor_id(): int
     {
         return $this->author_id;
     }

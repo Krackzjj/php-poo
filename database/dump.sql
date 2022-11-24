@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `Post`
     content     TEXT,
     author_id   INT NOT NULL,
     created_at  VARCHAR(255) NOT NULL,
-    img         TEXT,
+    img         TEXT
 
 );
 
@@ -25,10 +25,8 @@ CREATE TABLE IF NOT EXISTS `Comment`
 (
     id          INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     content     TEXT,
-    author_id   INT,
     post_id     INT NOT NULL,
-    created_at  VARCHAR(255) NOT NULL,
-    parent_com  INT
+    parent_id   INT
 );
 
 
@@ -38,4 +36,4 @@ ALTER TABLE Post
 ALTER TABLE Comment
     ADD CONSTRAINT FK_author_id FOREIGN KEY (author_id) REFERENCES User(id),
         CONSTRAINT FK_post_id FOREIGN KEY (post_id) REFERENCES Post(id);
-        CONSTRAINT com FOREIGN KEY () REFERENCES Comment(parent_com)
+        CONSTRAINT FK_parent_com FOREIGN KEY (parent_com) REFERENCES Comment(id)

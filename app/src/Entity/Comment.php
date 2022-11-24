@@ -2,54 +2,29 @@
 
 namespace App\Entity;
 
-use App\Entity\BaseEntity;
-
 class Comment extends BaseEntity
 {
-
-    private int $id;
-    private string $content;
-    private int|string $author_id;
-    private int $post_id;
-    private string $created_at;
-    private $parent_com;
+    private ?int    $id         = null;
+    private ?string $content    = null;
+    private ?int    $post_id    = null;
+    private ?int    $parent_id = null;
 
     /**
-     * Get the value of post_id
+     * Get the value of id
      */
-    public function getPost_id()
+    public function getId()
     {
-        return $this->post_id;
+        return $this->id;
     }
 
     /**
-     * Set the value of post_id
+     * Set the value of id
      *
      * @return  self
      */
-    public function setPost_id($post_id)
+    public function setId($id)
     {
-        $this->post_id = $post_id;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of author_id
-     */
-    public function getAuthor_id()
-    {
-        return $this->author_id;
-    }
-
-    /**
-     * Set the value of author_id
-     *
-     * @return  self
-     */
-    public function setAuthor_id($author_id)
-    {
-        $this->author_id = $author_id;
+        $this->id = $id;
 
         return $this;
     }
@@ -75,41 +50,21 @@ class Comment extends BaseEntity
     }
 
     /**
-     * Get the value of id
+     * Get the value of post_id
      */
-    public function getId()
+    public function getPost_id()
     {
-        return $this->id;
+        return $this->post_id;
     }
 
     /**
-     * Set the value of id
+     * Set the value of post_id
      *
      * @return  self
      */
-    public function setId($id)
+    public function setPost_id($post_id)
     {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of created_at
-     */
-    public function getCreated_at()
-    {
-        return $this->created_at;
-    }
-
-    /**
-     * Set the value of created_at
-     *
-     * @return  self
-     */
-    public function setCreated_at($created_at)
-    {
-        $this->created_at = $created_at;
+        $this->post_id = $post_id;
 
         return $this;
     }
@@ -117,9 +72,9 @@ class Comment extends BaseEntity
     /**
      * Get the value of parent_com
      */
-    public function getParent_com()
+    public function getParent_id()
     {
-        return $this->parent_com;
+        return $this->parent_id;
     }
 
     /**
@@ -127,9 +82,9 @@ class Comment extends BaseEntity
      *
      * @return  self
      */
-    public function setParent_com($parent_com)
+    public function setParent_id($parent_id)
     {
-        $this->parent_com = $parent_com;
+        $this->parent_id = $parent_id;
 
         return $this;
     }

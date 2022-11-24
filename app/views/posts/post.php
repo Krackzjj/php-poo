@@ -21,6 +21,8 @@
     <?php endif; ?>
     <a href="/" class="btn btn-primary mb-2">Retour à l'accueil</a>
     <h3>Commentaires :</h3>
-
+    <?php foreach ($comments as $comment) : ?>
+        <?php require('comment.php') ?>
+    <?php endforeach; ?>
 </div>
 </div>

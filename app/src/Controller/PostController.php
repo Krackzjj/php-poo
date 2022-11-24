@@ -33,25 +33,38 @@ class PostController extends AbstractController
     public function postById(int $id)
     {
         $postManager = new PostManager(new PDOFactory());
-        $userManager = new UserManager(new PDOFactory());
+        $commentsManager = new CommentManager(new PDOFactory());
 
         $post = $postManager->getPostById($id);
 
-        $user = $userManager->getUserbyId($post->getAuthor_id());
 
-        $author = $user == null ? 'ANON' : $user->getUsername();
+        $comments = $commentsManager->getAllCommentsbyPost($id);
 
-        //commentaires
-        $commentManager = new CommentManager(new PDOFactory());
-        $comments = $commentManager->getAllCommentsByPostId($id);
-        $com_auth = $userManager->getAllUsers();
+
+        $comments_index = [];
+
+        // j'index le tableau
+        foreach ($comments as $comment) {
+            $comments_index[$comment->getId()] = $comment;
+        }
+
+        //je modifie le tableau
+        foreach ($comments as $key => $comment) {
+            //je detect s'il y a des enfants
+            if ($comment->getParent_id() != null) {
+                //je modifie comments car c'est un objet
+                $comments_index[$comment->getParent_id()]->children[] = $comment;
+                unset($comments[$key]);
+            }
+        }
+
 
 
         if (!$post) {
             header('location: /?error=notfound');
             exit;
         }
-        $this->render('posts/post', compact('post', 'author', 'comments', 'com_auth'));
+        $this->render('posts/post', compact('post', 'comments'));
         if (isset($_GET['admin'])) {
             header('location:/posts');
         }

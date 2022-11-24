@@ -30,7 +30,7 @@
                     <h4><?= $post->getTitle() ?></h4>
                     <div class="d-flex gap-1 w-25">
                         <span class="badge text-bg-info"><?php echo $post->getCreated_at() ?></span>
-                        <span class="badge text-bg-secondary"><?php echo ucfirst($post->getAuthor_id()) ?></span>
+                        <span class="badge text-bg-secondary"><?= $post->getAuthor_id() ?></span>
                     </div>
                     <p><?= substr($post->getContent(), 0, 350) . '...' ?></p>
                     <a href="/post/<?php echo $post->getId() ?>" class="btn btn-primary btn-sm">Lire la suite</a>
