@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Post;
 use App\Factory\PDOFactory;
 use App\Manager\CommentManager;
@@ -18,7 +19,12 @@ class PostController extends AbstractController
     {
         $postManager = new PostManager(new PDOFactory());
 
+        $userManager = new UserManager(new PDOFactory());
+
         $posts = $postManager->getAllPosts();
+        foreach ($posts as $post) {
+            $post->username = $userManager->getUserbyId($post->getAuthor_id())->getUsername();
+        }
 
         $this->render("home", [
             "posts" => $posts,
@@ -30,13 +36,21 @@ class PostController extends AbstractController
      * @return void
      */
     #[Route('/post/{id}', name: "post-id", methods: ["GET"])]
-    public function postById(int $id)
+    public function postById($id)
     {
         $postManager = new PostManager(new PDOFactory());
-        $commentsManager = new CommentManager(new PDOFactory());
-
         $post = $postManager->getPostById($id);
 
+        /*<----------------- Users ----------------------------->*/
+        $userManager = new UserManager(new PDOFactory());
+        $user = $userManager->getUserbyId($post->getAuthor_id());
+
+        $post->username = $user->getUsername();
+
+
+
+        /*<----------------- Commentaire ----------------------->*/
+        $commentsManager = new CommentManager(new PDOFactory());
 
         $comments = $commentsManager->getAllCommentsbyPost($id);
 
@@ -64,7 +78,7 @@ class PostController extends AbstractController
             header('location: /?error=notfound');
             exit;
         }
-        $this->render('posts/post', compact('post', 'comments'));
+        $this->render('posts/post', compact('post', 'comments', 'user'));
         if (isset($_GET['admin'])) {
             header('location:/posts');
         }
@@ -77,6 +91,8 @@ class PostController extends AbstractController
     public function updatePost(int $id)
     {
         $postManager = new PostManager(new PDOFactory());
+        $userManager = new UserManager(new PDOFactory());
+
         $post = $postManager->getPostById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -99,7 +115,7 @@ class PostController extends AbstractController
         $postManager = new PostManager(new PDOFactory());
 
         $post = new Post();
-        extract($_POST);
+        strip_tags(extract($_POST));
         $author_id = $_SESSION['auth'];
         $date = new \DateTime();
         $created_at = $date->format('d-m-Y H-i-s');
@@ -147,6 +163,30 @@ class PostController extends AbstractController
         }
 
         header("location: /");
+        exit;
+    }
+    #[Route('/post/{id}/insert-comment', name: 'insert-comment', methods: ['POST'])]
+    public function insertComment(int $id)
+    {
+        $commentManager = new CommentManager(new PDOFactory());
+
+        $comment = new Comment();
+
+        $author_id_com = $_SESSION['auth'];
+
+        $post_id_com = $id;
+        $date = new \DateTime();
+        $created_at_com = $date->format('d-m-Y H-i-s');
+        $content_com = $_POST['content'];
+
+        $array = compact('content_com', 'post_id_com', 'author_id_com', 'created_at_com');
+
+        $comment->hydrate($array);
+
+        $commentManager->insertComment($comment);
+
+        //$last = $commentManager->getLastCommentIDbyAuthor($_SESSION['auth'])->getId();
+        header("location:/post/$id#com");
         exit;
     }
 }

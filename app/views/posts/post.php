@@ -5,7 +5,7 @@
     </header>
     <div class="container">
         <span class="badge text-bg-dark"><?php echo $post->getCreated_at() ?></span>
-        <span class="badge text-bg-dark"><?php echo $author ?></span>
+        <span class="badge text-bg-dark"><?php echo $post->username ?></span>
         <p><?= $post->getContent() ?></p>
     </div>
 
@@ -25,4 +25,8 @@
         <?php require('comment.php') ?>
     <?php endforeach; ?>
 </div>
+<form action="<?= $post->getId() ?>/insert-comment" class="m-2" method="post">
+    <textarea name="content" id="content" class="form-control" placeholder="text here"></textarea>
+    <input class="btn btn-primary mt-2" type="submit" value="Envoyer">
+</form>
 </div>

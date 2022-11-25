@@ -1,9 +1,9 @@
 <form method="POST" class="m-auto d-flex flex-column w-25">
-    <label for='username'>Username</label><input type="text" name="username" id="username">
-    <label for="hashedPassword">hashedPassword</label><input type="password" name="hashedPassword" id="hashedPassword">
-    <label for="email">email</label><input type="email" name="email" id="email">
-    <label for="firstName">firstName</label><input type="text" name="firstName" id="firstName">
-    <label for="lastName">lastName</label><input type="text" name="lastName" id="lastName">
-    <label for="gender">gender</label><input type="text" name="gender" id="gender">
-    <input type="submit" class="mt-2" value="SIGN">
+    <label class="form-label" for='username'>Pseudo: </label><input class="form-control" type="text" name="username" id="username">
+    <label class="form-label" for="hashedPassword">Mot de passe: </label><input class="form-control" type="password" name="hashedPassword" id="hashedPassword">
+    <label class="form-label" for="email">e-mail: </label><input class="form-control" type="email" name="email" id="email">
+    <label class="form-label" for="firstName">Prénom: </label><input class="form-control" type="text" name="firstName" id="firstName">
+    <label class="form-label" for="lastName">Nom: </label><input class="form-control" type="text" name="lastName" id="lastName">
+    <label class="form-label" for="gender">Genre: </label><input class="form-control" type="text" name="gender" id="gender">
+    <input type="submit" class="mt-2 btn btn-primary" value="SIGN">
 </form>

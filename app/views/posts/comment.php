@@ -1,5 +1,5 @@
-<div class="border">
-    <div class="panel-body">
+<div class="border" id="com-<?= $comment->getId() ?>">
+    <div class="border">
         <p><?php echo strip_tags($comment->getContent()) ?></p>
     </div>
 </div>

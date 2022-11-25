@@ -12,7 +12,7 @@ class PostManager extends BaseManager
      */
     public function getAllPosts(): array
     {
-        $query = $this->pdo->query("SELECT Post.id,title,content,author_id,created_at,img,username FROM Post INNER JOIN User ON User.id = Post.author_id ORDER BY Post.id");
+        $query = $this->pdo->query("SELECT id,title,content,author_id,created_at,img FROM Post ORDER BY id");
         $posts = [];
 
         while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
@@ -66,7 +66,7 @@ class PostManager extends BaseManager
     }
     public function getLastPostbyAuthorID(int $id)
     {
-        $query = $this->pdo->prepare('SELECT * FROM Post WHERE author_id = :id ORDER BY id DESC LIMIT 1');
+        $query = $this->pdo->prepare('SELECT * FROM Comment WHERE author_id = :id ORDER BY id DESC LIMIT 1');
         $query->bindValue('id', $id, \PDO::PARAM_INT);
         $query->execute();
         $data = $query->fetch(\PDO::FETCH_ASSOC);
