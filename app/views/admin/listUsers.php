@@ -1,4 +1,8 @@
 <h1 class="mx-2">Tous les utilisateurs</h1>
+<div class="mx-2">
+    <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+    <a href="/account" class="btn btn-primary">Retour</a>
+</div>
 <table class="table table-striped m-auto w-75 border">
     <thead>
         <tr>
@@ -25,7 +29,3 @@
         <?php endforeach; ?>
     </tbody>
 </table>
-<div class="d-flex gap-1 mx-2">
-    <a href="/" class="btn btn-primary">Retour à l'accueil</a>
-    <a href="/account" class="btn btn-primary">Retour</a>
-</div>

@@ -62,4 +62,27 @@ class CommentManager extends BaseManager
         }
         return null;
     }
+    public function deleteComment(int $id)
+    {
+        $query = $this->pdo->prepare('DELETE FROM Comment WHERE id=:id');
+        $query->bindValue('id', $id, \PDO::PARAM_INT);
+        $query->execute();
+    }
+    public function getCommentbyId(int $id)
+    {
+        $query = $this->pdo->prepare('SELECT * FROM Comment WHERE id=:id');
+        $query->bindValue('id', $id, \PDO::PARAM_INT);
+        $query->execute();
+
+        $data = $query->fetch(\PDO::FETCH_ASSOC);
+        $comment = new Comment($data);
+        return $comment ?? null;
+    }
+    public function updateComment(int $id, string $content)
+    {
+        $query = $this->pdo->prepare('UPDATE Comment SET content = :content WHERE id=:id');
+        $query->bindValue('id', $id, \PDO::PARAM_INT);
+        $query->bindValue('content', $content, \PDO::PARAM_STR);
+        $query->execute();
+    }
 }

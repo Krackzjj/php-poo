@@ -28,14 +28,11 @@ class PostManager extends BaseManager
         $query = $this->pdo->prepare("SELECT * FROM Post WHERE id = :id");
         $query->bindValue('id', $id, \PDO::PARAM_INT);
         $query->execute();
-        $data = $query->fetch(\PDO::FETCH_ASSOC);
-
-        $post = new Post($data);
-
-
-        if ($post) {
+        if ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $post = new Post($data);
             return $post;
-        }
+        };
+
         return null;
     }
     public function insertPost(Post $post)
@@ -69,11 +66,11 @@ class PostManager extends BaseManager
         $query->bindValue('id', $id, \PDO::PARAM_INT);
         $query->execute();
         $data = $query->fetch(\PDO::FETCH_ASSOC);
-
-        $post = new Post($data);
-
-        if ($post) {
-            return $post;
+        if ($data) {
+            $post = new Post($data);
+            if ($post) {
+                return $post;
+            }
         }
         return null;
     }

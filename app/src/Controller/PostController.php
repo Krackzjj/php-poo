@@ -39,6 +39,10 @@ class PostController extends AbstractController
     {
         $postManager = new PostManager(new PDOFactory());
         $post = $postManager->getPostById($id);
+        if (!$post) {
+            header('location: /?error=post');
+            exit;
+        }
 
         /*<----------------- Users ----------------------------->*/
         $userManager = new UserManager(new PDOFactory());
@@ -59,6 +63,7 @@ class PostController extends AbstractController
         // j'index le tableau
         foreach ($comments as $comment) {
             $comments_index[$comment->getId()] = $comment;
+            $comments_index[$comment->getId()]->username = $userManager->getUserbyId($comment->getAuthor_id())->getUsername();
         }
 
         // //je modifie le tableau
@@ -73,10 +78,7 @@ class PostController extends AbstractController
 
 
 
-        if (!$post) {
-            header('location: /?error=notfound');
-            exit;
-        }
+
         $this->render('posts/post', compact('post', 'comments', 'user'));
     }
     /**

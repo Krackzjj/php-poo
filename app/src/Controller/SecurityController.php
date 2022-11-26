@@ -83,6 +83,7 @@ class SecurityController extends AbstractController
             $user = $userManager->getUserbyId($_SESSION['auth']);
             $this->render('users/account', compact('user'));
         }
-        header('location: /?error=notfound');
+        header('location: /?error=user');
+        exit;
     }
 }

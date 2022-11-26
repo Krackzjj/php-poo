@@ -1,15 +1,24 @@
-<div class="container" style="border-bottom: 3px solid #0d6efd;">
-    <div class="row">
-        <div class="col-12 p-2">
-            <p id="<?= $comment->getId() ?>"><?php echo strip_tags($comment->getContent()) ?></p>
-            <P><?php echo $comment->getAuthor_id() ?></P>
-            <P><?php echo $comment->getCreated_at() ?></P>
+<div class="container">
+    <div class="row border border-primary mt-2" id="<?= $comment->getId() ?>">
+        <div class="p2">
+            <div class="">
+                <div class="input-group flex-nowrap mt-2">
+                    <span class="input-group-text" id="addon-wrapping">@</span>
+                    <input type="text" class="form-control" placeholder="<?= $comment->username ?>" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+                </div>
+                <span class="badge text-bg-dark align-self-center"><?php echo $comment->getCreated_at() ?></span>
+
+
+
+            </div>
+            <p><?php echo strip_tags($comment->getContent()) ?></p>
+
         </div>
-    </div>
-    <div class="row">
-        <div class="col-11"></div>
-        <div class="col-1">
-            <a href="?reply=<?= $comment->getId() ?>#goto" class="btn btn-primary btn-sm mb-1">Répondre</a>
+        <div class="d-flex gap-1">
+            <a href="?reply=<?= $comment->getId() ?>#goto" class="btn btn-primary btn-sm my-2 ml-2">Répondre</a>
+            <?php if (isset($_SESSION['auth']) && $_SESSION['auth'] == $comment->getAuthor_id() || isset($_SESSION['ROLE'])) : ?>
+                <a href="/com/<?= $comment->getId() ?>/update" class="btn btn-warning btn-sm my-2">Éditer</a>
+            <?php endif; ?>
         </div>
     </div>
 </div>

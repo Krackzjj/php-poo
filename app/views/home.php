@@ -2,9 +2,14 @@
         <h1>Tous les Posts</h1>
     </header>
     <?php
+    $errors = [
+        "user" => "Le mot de passe ou le mot de passe est inccorect",
+        "post" => "Le post n'as pas été trouvé",
+    ];
     if (isset($_GET['error'])) :
+        $get = $_GET['error'];
     ?>
-        <div class="alert alert-danger">Cet utilisateur est inconnu</div>
+        <div class="alert alert-danger"><?= $errors[$get] ?></div>
     <?php
     endif;
     if (isset($_GET['connect'])) { ?>

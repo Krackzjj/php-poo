@@ -25,8 +25,22 @@
             <?php require('comment.php') ?>
         <?php endforeach; ?>
     </div>
-    <form action="<?php echo $post->getId() ?>/insert-comment<?= isset($_GET['reply']) ? '?reply=' . $_GET['reply'] : '' ?>" class="m-2" method="post">
+    <?php
+    $reply = isset($_GET['reply']) ? ("?reply=" . $_GET['reply']) : '';
+    $admin = isset($_GET['admin']) ? ("") : '';
+
+    ?>
+    <form action="<?= $post->getId() ?>/insert-comment<?= $reply ?>" class="m-2" method="post">
         <textarea name="content" id="goto" class="form-control" placeholder="text here"></textarea>
         <input class="btn btn-primary mt-2" type="submit" value="Envoyer">
     </form>
     </div>
+    <script>
+        let hash = (window.location.hash).substring(1)
+        if (hash != 'goto') {
+            let com = document.getElementById(hash)
+            com.classList.remove('border-primary')
+            com.style.backgroundColor = 'rgb(12, 110, 253,0.2)'
+            com.style.fontWeight = 'bold'
+        }
+    </script>

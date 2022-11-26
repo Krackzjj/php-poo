@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <?php var_dump($_SESSION) ?>
     <?= $_pageContent; ?>
 </body>
 
