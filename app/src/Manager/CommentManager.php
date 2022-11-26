@@ -9,14 +9,11 @@ class CommentManager extends BaseManager
     public function getAllComments()
     {
         $query = $this->pdo->query('SELECT * FROM Comment');
-        $data = $query->fetch(\PDO::FETCH_ASSOC);
-
-        $comments = [];
-
-        while ($data) {
-            $comments[] = new Comment($data);
+        $coms = [];
+        while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $coms[] = new Comment($data);
         }
-        return $comments;
+        return $coms;
     }
     public function getAllCommentsbyPost(int $id)
     {
@@ -42,16 +39,17 @@ class CommentManager extends BaseManager
         }
         return $comments;
     }
-    public function insertComment($comment)
+    public function insertComment(Comment $comment)
     {
-        $query = $this->pdo->prepare("INSERT INTO Comment (content,post_id,author_id, created_at) VALUES (:content, :post_id, :author_id, :created_at)");
+
+        $query = $this->pdo->prepare("INSERT INTO Comment (content,post_id,parent_id,author_id) VALUES (:content,:post_id,:parent_id,:author_id)");
         $query->bindValue('content', $comment->getContent(), \PDO::PARAM_STR);
         $query->bindValue('post_id', $comment->getPost_id(), \PDO::PARAM_INT);
-        $query->bindValue('author_id', $comment->getPost_id(), \PDO::PARAM_INT);
-        $query->bindValue('created_at', $comment->getPost_id(), \PDO::PARAM_STR);
+        $query->bindValue('parent_id', $comment->getParent_id(), \PDO::PARAM_INT);
+        $query->bindValue('author_id', $comment->getAuthor_id(), \PDO::PARAM_INT);
         $query->execute();
     }
-    public function getLastCommentIDbyAuthor(int $id)
+    public function getLastCommentbyAuthorId(int $id)
     {
         $query = $this->pdo->prepare('SELECT * FROM Comment WHERE author_id=:id ORDER BY id DESC LIMIT 1');
         $query->bindValue('id', $id, \PDO::PARAM_INT);

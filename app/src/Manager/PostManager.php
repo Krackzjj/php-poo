@@ -40,11 +40,10 @@ class PostManager extends BaseManager
     }
     public function insertPost(Post $post)
     {
-        $query = $this->pdo->prepare('INSERT INTO Post (title,content,author_id,created_at,img) VALUES (:title,:content,:author_id,:created_at,:img)');
+        $query = $this->pdo->prepare('INSERT INTO Post (title,content,author_id,img) VALUES (:title,:content,:author_id,:img)');
         $query->bindValue('title', $post->getTitle(), \PDO::PARAM_STR);
         $query->bindValue('content', $post->getContent(), \PDO::PARAM_STR);
         $query->bindValue('author_id', $post->getAuthor_id(), \PDO::PARAM_INT);
-        $query->bindValue('created_at', $post->getCreated_at(), \PDO::PARAM_STR);
         $query->bindValue('img', $post->getImg(), \PDO::PARAM_STR);
         $query->execute();
     }
@@ -66,7 +65,7 @@ class PostManager extends BaseManager
     }
     public function getLastPostbyAuthorID(int $id)
     {
-        $query = $this->pdo->prepare('SELECT * FROM Comment WHERE author_id = :id ORDER BY id DESC LIMIT 1');
+        $query = $this->pdo->prepare('SELECT * FROM Post WHERE author_id = :id ORDER BY id DESC LIMIT 1');
         $query->bindValue('id', $id, \PDO::PARAM_INT);
         $query->execute();
         $data = $query->fetch(\PDO::FETCH_ASSOC);

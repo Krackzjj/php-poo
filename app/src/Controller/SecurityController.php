@@ -60,7 +60,7 @@ class SecurityController extends AbstractController
             if ($userManager->getUserbyId($_SESSION['auth'])->getRoles()['ROLE'] == 'ADMIN') {
                 $_SESSION['ROLE'] = true;
             }
-            $this->render('users/showUsers', ['user' => $user]);
+            $this->render('users/account', ['user' => $user]);
         }
 
         header("Location: /?error=notfound");
@@ -81,7 +81,7 @@ class SecurityController extends AbstractController
 
         if (isset($_SESSION)) {
             $user = $userManager->getUserbyId($_SESSION['auth']);
-            $this->render('users/showUsers', compact('user'));
+            $this->render('users/account', compact('user'));
         }
         header('location: /?error=notfound');
     }

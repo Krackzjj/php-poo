@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Comment;
 use App\Entity\Post;
 use App\Factory\PDOFactory;
 use App\Manager\CommentManager;
@@ -62,7 +61,7 @@ class PostController extends AbstractController
             $comments_index[$comment->getId()] = $comment;
         }
 
-        //je modifie le tableau
+        // //je modifie le tableau
         foreach ($comments as $key => $comment) {
             //je detect s'il y a des enfants
             if ($comment->getParent_id() != null) {
@@ -79,9 +78,6 @@ class PostController extends AbstractController
             exit;
         }
         $this->render('posts/post', compact('post', 'comments', 'user'));
-        if (isset($_GET['admin'])) {
-            header('location:/posts');
-        }
     }
     /**
      * @param $id
@@ -100,7 +96,7 @@ class PostController extends AbstractController
         }
 
         $postManager->updatePost($id, $_POST);
-        header('location: /post/' . $id . '?admin');
+        header('location: /post/' . $id);
         exit;
     }
     /**
@@ -117,12 +113,11 @@ class PostController extends AbstractController
         $post = new Post();
         strip_tags(extract($_POST));
         $author_id = $_SESSION['auth'];
-        $date = new \DateTime();
-        $created_at = $date->format('d-m-Y H-i-s');
 
 
 
-        $post->hydrate(compact('title', 'content', 'author_id', 'created_at', 'img'));
+
+        $post->hydrate(compact('title', 'content', 'author_id', 'img'));
 
         $postManager->insertPost($post);
 
@@ -163,30 +158,6 @@ class PostController extends AbstractController
         }
 
         header("location: /");
-        exit;
-    }
-    #[Route('/post/{id}/insert-comment', name: 'insert-comment', methods: ['POST'])]
-    public function insertComment(int $id)
-    {
-        $commentManager = new CommentManager(new PDOFactory());
-
-        $comment = new Comment();
-
-        $author_id_com = $_SESSION['auth'];
-
-        $post_id_com = $id;
-        $date = new \DateTime();
-        $created_at_com = $date->format('d-m-Y H-i-s');
-        $content_com = $_POST['content'];
-
-        $array = compact('content_com', 'post_id_com', 'author_id_com', 'created_at_com');
-
-        $comment->hydrate($array);
-
-        $commentManager->insertComment($comment);
-
-        //$last = $commentManager->getLastCommentIDbyAuthor($_SESSION['auth'])->getId();
-        header("location:/post/$id#com");
         exit;
     }
 }

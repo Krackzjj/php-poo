@@ -7,9 +7,10 @@
 
 <?php if ($user->getRoles()['ROLE'] && $user->getRoles()['ROLE'] == "ADMIN") : ?>
     <div class="alert alert-success mx-2">Vous êtes Administrateur</div>
-    <div class="mx-2 d-flex flex justify-content-start gap-1 w-25">
+    <div class="mx-2 d-flex flex justify-content-start gap-1">
         <a href="/posts" class="btn btn-primary">Liste des posts</a>
         <a href="/users" class="btn btn-primary">Liste des utilisateurs</a>
+        <a href="/coms" class="btn btn-primary">Liste des commentaires</a>
     </div>
 <?php endif; ?>
 

@@ -7,10 +7,10 @@ class Comment extends BaseEntity
     private ?int    $id         = null;
     private ?string $content    = null;
     private ?int    $post_id    = null;
-    private ?int    $parent_id  = null;
+    private int     $parent_id  =    0;
     private ?int    $author_id  = null;
-    private ?string $created_at = null;
-    
+    private \DateTime $created_at;
+
 
     /**
      * Get the value of id
@@ -75,7 +75,7 @@ class Comment extends BaseEntity
     /**
      * Get the value of parent_com
      */
-    public function getParent_id()
+    public function getParent_id(): int
     {
         return $this->parent_id;
     }
@@ -85,7 +85,7 @@ class Comment extends BaseEntity
      *
      * @return  self
      */
-    public function setParent_id($parent_id)
+    public function setParent_id($parent_id): Comment
     {
         $this->parent_id = $parent_id;
 
@@ -94,27 +94,27 @@ class Comment extends BaseEntity
 
     /**
      * Get the value of created_at
-     */ 
+     */
     public function getCreated_at()
     {
-        return $this->created_at;
+        return $this->created_at->format('d-m-Y');
     }
 
     /**
      * Set the value of created_at
      *
      * @return  self
-     */ 
+     */
     public function setCreated_at($created_at)
     {
-        $this->created_at = $created_at;
+        $this->created_at = new \DateTime();
 
         return $this;
     }
 
     /**
      * Get the value of author_id
-     */ 
+     */
     public function getAuthor_id()
     {
         return $this->author_id;
@@ -124,7 +124,7 @@ class Comment extends BaseEntity
      * Set the value of author_id
      *
      * @return  self
-     */ 
+     */
     public function setAuthor_id($author_id)
     {
         $this->author_id = $author_id;

@@ -25,10 +25,10 @@ CREATE TABLE IF NOT EXISTS `Comment`
 (
     id          INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     content     TEXT,
-    post_id     INT NOT NULL,
-    parent_id   INT,
-    author_id   INT NOT NULL,
-    created_at  VARCHAR(255) NOT NULL
+    post_id     INT,
+    parent_id   INT DEFAULT 0,
+    author_id   INT,
+    created_at  VARCHAR(255)
 );
 
 

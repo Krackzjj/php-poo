@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+
 class Post extends BaseEntity
 {
     private ?int        $id         = null;
     private ?string     $title      = null;
     private ?string     $content    = null;
     private ?int        $author_id  = null;
-    private ?string     $created_at = null;
+    private \Datetime|string   $created_at;
     private ?string     $img        = null;
 
 
@@ -77,7 +78,7 @@ class Post extends BaseEntity
      */
     public function getCreated_at(): string
     {
-        return $this->created_at;
+        return $this->created_at->format('d-m-Y');
     }
 
     /**
@@ -85,9 +86,9 @@ class Post extends BaseEntity
      *
      * @return  User
      */
-    public function setCreated_at(string $created_at): Post
+    public function setCreated_at(): Post
     {
-        $this->created_at = $created_at;
+        $this->created_at = new \DateTime();
 
         return $this;
     }

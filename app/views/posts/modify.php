@@ -1,10 +1,17 @@
-<h1 style="width: 50%;margin:auto">Modifier le Post</h1>
-<form method="post" style="display:flex;flex-direction:column;width:50%;margin:auto">
-    <label for="titre">Titre: </label><input name="title" id="title" type="text" value="<?php echo $post->getTitle() ?>">
-    <label for="content">Titre: </label><textarea name="content" id="content" cols="150" rows="20"><?php echo $post->getContent() ?></textarea>
-    <label for="img">Lien Image: </label><input type="text" name="img" id="img" value="<?php echo $post->getImg() ?>">
-    <div class="mt-2 justify-content-center d-flex">
-        <input type="submit" class="btn btn-success" value="ENVOYER">
-        <a class="btn btn-primary mx-2" href="<?= $_SERVER['HTTP_REFERER']  ?>">ANNULER</a>
-    </div>
-</form>
+<div class="container">
+    <header>
+        <h1>Modifier le POST <?= $post->getTitle() ?></h1>
+    </header>
+    <!-- @TODO ajouté enctype/ -->
+    <form method="POST" class="w-100 d-flex flex-column">
+        <label for="title">Titre: </label>
+        <input type="text" name="title" id="title" value="<?= $post->getTitle() ?>">
+        <label for="content">Contenu: </label>
+        <textarea name="content" id="content" cols="150" rows="30" placeholder="Text Here"><?= $post->getContent() ?></textarea>
+        <input name="img" id="img" type="text" placeholder="lien vers l'image" class="mt-2" value="<?= $post->getImg()  ?>">
+        <div>
+            <input type="submit" class="btn btn-dark mt-2 w-25">
+            <a href="<?= $_SERVER['HTTP_REFERER'] ?>" class="btn btn-danger mt-2 w-25">Annuler</a>
+        </div>
+    </form>
+</div>
