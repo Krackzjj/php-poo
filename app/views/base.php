@@ -65,6 +65,8 @@
                 <div class="alert alert-danger flash">Tout les champs doivent être remplis</div>
             <?php elseif (isset($_GET['error']) && $_GET['error'] == 'notfound') : ?>
                 <div class="alert alert-danger flash">Mauvais identifiants</div>
+            <?php elseif (isset($_GET['error']) && $_GET['error'] == 'incorrect') : ?>
+                <div class="alert alert-danger flash">Un champs est incorrect</div>
             <?php endif; ?>
         </ul>
         <div class="content w-100">

@@ -17,16 +17,24 @@ class SecurityController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $this->render('users/sign');
         }
-        strip_tags(extract($_POST));
+
+        $_SESSION['temp'] = $_POST;
         $roles = ["ROLES" => json_encode(['ROLE' => 'USER'])];
-        $arr = array_merge($_POST, $roles);
-        foreach ($arr as $ar) {
+        // $arr = array_merge($_POST, $roles);
+        foreach ($_POST as $ar) {
             if ($ar == null || $ar == false) {
-                $_SESSION['temp'] = $_POST;
-                header('location:/sign?error=empty',);
+                header('location:/sign?error=empty');
                 exit;
             }
         }
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            header('location:/sign?error=incorrect');
+            exit;
+        }
+        if (strlen($_POST['gender']) > 1) {
+            $_POST['gender'] = substr($_POST['gender'], 0, 1);
+        }
+        $arr = array_merge($_POST, $roles);
 
         unset($_SESSION['temp']);
         $user = new User();
@@ -37,7 +45,7 @@ class SecurityController extends AbstractController
         $userManager->insertUser($user);
         $lastuserid = $userManager->getLastUser()->getId();
         $_SESSION['auth'] = $lastuserid;
-        $_SESSION['username'] = $username;
+        $_SESSION['username'] = $_POST['username'];
 
 
         header('location: /');

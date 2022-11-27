@@ -40,12 +40,7 @@ class CommentController extends AbstractController
         $commentManager->insertComment($comment);
 
         $lastcom = $commentManager->getLastCommentbyAuthorId($_SESSION['auth']);
-        foreach ($_POST as $p) {
-            if ($p == null) {
-                header("location:/post/$id/?error=empty");
-                exit;
-            }
-        }
+
         header("location: /post/$id#" . $lastcom->getId());
         exit;
     }

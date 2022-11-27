@@ -1,7 +1,8 @@
     <div class="container">
         <header class="container d-flex flex-column">
             <h2><?= $post->getTitle() ?></h2>
-            <img width="300px" class="m-auto" src="<?= $post->getImg() ?>" alt="">
+            <img width="300px" class="m-auto" src="../../src/assets/téléchargement.png" alt="">
+
         </header>
         <div class="container">
             <span class="badge text-bg-dark"><?= $post->getCreated_at() ?></span>

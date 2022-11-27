@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `User`
     firstName VARCHAR(255),
     lastName  VARCHAR(255),
     gender    CHAR(1),
-    roles     JSON         DEFAULT '{\"ROLE\":\"USER\"}'; NOT NULL
+    roles     JSON
 );
 
 CREATE TABLE IF NOT EXISTS `Post`

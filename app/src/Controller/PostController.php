@@ -122,19 +122,31 @@ class PostController extends AbstractController
         strip_tags(extract($_POST));
         $author_id = $_SESSION['auth'];
 
+        $file = $_FILES['img'] ?? null;
+        if ($file) {
+            move_uploaded_file($file['tmp_name'], './src/assets/' . $file['name']);
+            $_POST['img'] = '../../src/assets/' . $file['name'];
+        }
         foreach ($_POST as $p) {
             if ($p == null) {
                 header('location:/new?error=empty');
                 exit;
             }
         }
+        $data = array_merge($_POST, ['author_id' => $author_id]);
 
 
-        $post->hydrate(compact('title', 'content', 'author_id', 'img'));
+        $post->hydrate($data);
 
         $postManager->insertPost($post);
 
         $lastpost = $postManager->getLastPostbyAuthorID($_SESSION['auth']);
+
+
+        if ($file) {
+            header('location:/post/' . $lastpost->getId() . '?true');
+            exit;
+        }
 
         header("location: /post/" . $lastpost->getId());
         exit;
@@ -146,8 +158,15 @@ class PostController extends AbstractController
     public function deletePost($id)
     {
         $userManager =  new UserManager(new PDOFactory());
+        $postManager = new PostManager(new PDOFactory());
+
+        $author = $postManager->getPostById($id)->getAuthor_id();
+
+
+
+
         $userRole = $userManager->getUserbyId($_SESSION['auth'])->getRoles();
-        if ($userRole['ROLE'] == 'ADMIN') {
+        if ($userRole['ROLE'] == 'ADMIN' || $_SESSION['auth'] == $author) {
             $postManager = new PostManager(new PDOFactory());
             $postManager->deletePost($id);
         }

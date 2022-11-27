@@ -41,6 +41,11 @@ class CommentManager extends BaseManager
     }
     public function insertComment(Comment $comment)
     {
+        if ($comment->getContent() == null || $comment->getContent() == ' ') {
+            header('location:/post/' . $comment->getPost_id() . '?error=empty#goto');
+            exit;
+        }
+
 
         $query = $this->pdo->prepare("INSERT INTO Comment (content,post_id,parent_id,author_id) VALUES (:content,:post_id,:parent_id,:author_id)");
         $query->bindValue('content', $comment->getContent(), \PDO::PARAM_STR);
