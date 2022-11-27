@@ -10,9 +10,9 @@ class UserManager extends BaseManager
     /**
      * @return User[]
      */
-    public function getAllUsers(): array
+    public function getAllUsers(string $opt = ""): array
     {
-        $query = $this->pdo->query("select * from User");
+        $query = $this->pdo->query("select * from User ORDER BY id $opt");
 
         $users = [];
 
@@ -21,6 +21,15 @@ class UserManager extends BaseManager
         }
 
         return $users;
+    }
+    public function getLastUser()
+    {
+        $query = $this->pdo->query("SELECT * FROM User ORDER BY id DESC LIMIT 1");
+        while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $user = new User($data);
+            return $user;
+        }
+        return null;
     }
 
     public function getByUsername(string $username): ?User
@@ -71,7 +80,6 @@ class UserManager extends BaseManager
     public function updateUser(int $id, array $data)
     {
         extract($data);
-        $ROLE = $ROLE ?? 'USER';
 
         $query = $this->pdo->prepare("UPDATE User SET username = :username, email = :email, firstName = :firstName, lastName = :lastName, gender = :gender, roles = :roles WHERE id =:id");
         $query->bindValue('id', $id, \PDO::PARAM_INT);
@@ -80,7 +88,7 @@ class UserManager extends BaseManager
         $query->bindValue('firstName', $firstName, \PDO::PARAM_STR);
         $query->bindValue('lastName', $lastName, \PDO::PARAM_STR);
         $query->bindValue('gender', $gender, \PDO::PARAM_STR);
-        $query->bindValue('roles', json_encode(['ROLE' => $ROLE]), \PDO::PARAM_STR);
+        $query->bindValue('roles', $ROLE, \PDO::PARAM_STR);
         $query->execute();
     }
 }

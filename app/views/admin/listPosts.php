@@ -1,12 +1,9 @@
 <h1 class="mx-2">Tous les Posts</h1>
-<div class="mx-2">
-    <a href="/" class="btn btn-primary">Retour à l'accueil</a>
-    <a href="/account" class="btn btn-primary">Retour</a>
-</div>
 <table class="table table-striped w-75 m-auto border">
     <thead>
         <tr>
             <th scope="col">ID</th>
+            <th scope="col">TITRE</th>
             <th scope="col">APERÇU</th>
             <th scope="col">ACTIONS</th>
         </tr>
@@ -15,7 +12,8 @@
         <?php foreach ($posts as $post) : ?>
             <tr>
                 <th scope="row"><?= $post->getId() ?></th>
-                <th><?= substr($post->getContent(), 0, 100) . ' ...' ?></th>
+                <td><?= $post->getTitle() ?></td>
+                <td><?= substr($post->getContent(), 0, 100) . ' ...' ?></td>
                 <td>
                     <a href="post/<?= $post->getId() ?>?admin" class="btn btn-info btn-sm">AFFICHER</a>
                     <a href="post/<?= $post->getId() ?>/delete?admin" class="btn btn-danger btn-sm">SUPPRIMER</a>

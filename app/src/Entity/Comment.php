@@ -10,7 +10,7 @@ class Comment extends BaseEntity
     private int     $parent_id  =    0;
     private ?int    $author_id  = null;
     private \DateTime $created_at;
-
+    private ?int    $child      =    0;
 
     /**
      * Get the value of id
@@ -128,6 +128,26 @@ class Comment extends BaseEntity
     public function setAuthor_id($author_id)
     {
         $this->author_id = $author_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of child
+     */
+    public function getChild()
+    {
+        return $this->child;
+    }
+
+    /**
+     * Set the value of child
+     *
+     * @return  self
+     */
+    public function setChild($child)
+    {
+        $this->child = $child;
 
         return $this;
     }

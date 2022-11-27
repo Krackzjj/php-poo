@@ -20,7 +20,7 @@ class PostController extends AbstractController
 
         $userManager = new UserManager(new PDOFactory());
 
-        $posts = $postManager->getAllPosts();
+        $posts = $postManager->getAllPosts('desc');
         foreach ($posts as $post) {
             $post->username = $userManager->getUserbyId($post->getAuthor_id())->getUsername();
         }
@@ -63,7 +63,13 @@ class PostController extends AbstractController
         // j'index le tableau
         foreach ($comments as $comment) {
             $comments_index[$comment->getId()] = $comment;
-            $comments_index[$comment->getId()]->username = $userManager->getUserbyId($comment->getAuthor_id())->getUsername();
+            if ($comment->getId()) {
+                if (!$userManager->getUserbyId($comment->getAuthor_id())) {
+                    $comments_index[$comment->getId()]->username = 'utilisateur supprimer';
+                    continue;
+                }
+                $comments_index[$comment->getId()]->username = $userManager->getUserbyId($comment->getAuthor_id())->getUsername();
+            }
         }
 
         // //je modifie le tableau
@@ -116,7 +122,12 @@ class PostController extends AbstractController
         strip_tags(extract($_POST));
         $author_id = $_SESSION['auth'];
 
-
+        foreach ($_POST as $p) {
+            if ($p == null) {
+                header('location:/new?error=empty');
+                exit;
+            }
+        }
 
 
         $post->hydrate(compact('title', 'content', 'author_id', 'img'));

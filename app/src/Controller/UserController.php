@@ -44,28 +44,28 @@ class UserController extends AbstractController
         header('location:' . $_SERVER['HTTP_REFERER']);
         exit;
     }
-    #[Route('/users/{id}/update', name: 'update-user', methods: ['GET', 'POST'])]
+    #[Route('/user/{id}/update', name: 'update-user', methods: ['GET', 'POST'])]
     public function updateUser($id)
     {
-
-        $userManager =  new UserManager(new PDOFactory());
+        $userManager = new UserManager(new PDOFactory());
+        $user_email = $userManager->getUserbyId($id)->getEmail();
         $user = $userManager->getUserbyId($id);
 
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $this->render('users/modify', compact('user'));
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            $this->render("users/modify", compact('user'));
         }
-        $email = ['email' => $user->getEmail()];
-        $data = array_merge($_POST, $email);
+        $role = json_encode($user->getRoles());
+
+
+        $data = array_merge(['email' => $user_email, 'ROLE' => $role], $_POST);
+
+
         $userManager->updateUser($id, $data);
-        if ($userManager->getUserbyId($_SESSION['auth'])->getRoles()['ROLE'] == 'ADMIN') {
-            if (preg_match('/account/', $_SERVER['HTTP_REFERER'])) {
-                header('location: /account');
-                exit;
-            }
-            header('location: /users');
+        if (isset($_GET['admin'])) {
+            header('location:/users');
             exit;
         }
-        header('location: /account');
+        header("location: /account ");
         exit;
     }
 }

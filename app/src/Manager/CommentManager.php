@@ -74,15 +74,27 @@ class CommentManager extends BaseManager
         $query->bindValue('id', $id, \PDO::PARAM_INT);
         $query->execute();
 
-        $data = $query->fetch(\PDO::FETCH_ASSOC);
-        $comment = new Comment($data);
-        return $comment ?? null;
+        while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $comment = new Comment($data);
+            return $comment;
+        }
+        return null;
     }
     public function updateComment(int $id, string $content)
     {
         $query = $this->pdo->prepare('UPDATE Comment SET content = :content WHERE id=:id');
         $query->bindValue('id', $id, \PDO::PARAM_INT);
         $query->bindValue('content', $content, \PDO::PARAM_STR);
+        $query->execute();
+    }
+    public function updateChild(int $id, int $nbr)
+    {
+        if ($nbr < 0) {
+            $nbr = 0;
+        }
+        $query = $this->pdo->prepare('UPDATE Comment SET child = :child WHERE id=:id');
+        $query->bindValue('id', $id, \PDO::PARAM_INT);
+        $query->bindValue('child', $nbr, \PDO::PARAM_INT);
         $query->execute();
     }
 }

@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `User`
     firstName VARCHAR(255),
     lastName  VARCHAR(255),
     gender    CHAR(1),
-    roles     JSON         NOT NULL
+    roles     JSON         DEFAULT '{\"ROLE\":\"USER\"}'; NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `Post`
@@ -28,5 +28,6 @@ CREATE TABLE IF NOT EXISTS `Comment`
     post_id     INT,
     parent_id   INT DEFAULT 0,
     author_id   INT,
-    created_at  DATE DEFAULT CURRENT_TIMESTAMP
+    created_at  DATE DEFAULT CURRENT_TIMESTAMP,
+    child   INT  DEFAULT 0
 );

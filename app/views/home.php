@@ -2,32 +2,6 @@
         <h1>Tous les Posts</h1>
     </header>
     <?php
-    $errors = [
-        "user" => "Le mot de passe ou le mot de passe est inccorect",
-        "post" => "Le post n'as pas été trouvé",
-    ];
-    if (isset($_GET['error'])) :
-        $get = $_GET['error'];
-    ?>
-        <div class="alert alert-danger"><?= $errors[$get] ?></div>
-    <?php
-    endif;
-    if (isset($_GET['connect'])) { ?>
-        <div class="alert alert-success">Compte utilisateur créé avec succès</div>
-        <a href='/login' class='btn btn-success mx-1 mt-1'>Connexion</a>
-    <?php } elseif (isset($_SESSION['auth'])) { ?>
-        <div class="w-100 d-flex justify-content-between">
-            <a href="/account" class='btn btn-primary mx-1 mt-1'>Mon Compte</a>
-            <div>
-                <a href="<?= isset($_SESSION['auth']) ? '/new' : '' ?>" class="btn btn-primary<?= isset($_SESSION['auth']) ? '' : ' disabled' ?>">Nouveau</a>
-            </div>
-            <a href='/logout' class='btn btn-danger mx-1 mt-1 '>Déconnexion</a>
-        </div>
-    <?php } else { ?>
-        <a href='/sign' class='btn btn-primary mx-1 mt-1'>S'inscrire</a>
-        <a href='/login' class='btn btn-success mx-1 mt-1'>Connexion</a>
-    <?php } ?>
-    <?php
     foreach ($posts as $post) :
     ?>
         <div class="container border p-2 mt-1">

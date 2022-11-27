@@ -13,13 +13,9 @@
         <?php
 
         if (isset($_SESSION['auth']) && $_SESSION['auth'] == $post->getAuthor_id() || isset($_SESSION['ROLE'])) : ?>
-            <a href="/post/<?= $post->getId() ?>/update<?= isset($_SESSION['ROLE']) ? '?admin' : '' ?>" class="btn btn-warning mb-2">EDITER</a>
-            <a href="/post/<?= $post->getId() ?>/delete<?= isset($_SESSION['ROLE']) ? '?admin' : '' ?>" class="btn btn-danger mb-2">SUPPRIMER</a>
-            <?php if (isset($_SESSION['ROLE'])) : ?>
-                <a href="/posts" class="btn btn-primary mb-2">Retour à la liste</a>
-            <?php endif; ?>
+            <a href="/post/<?= $post->getId() ?>/update<?= isset($_SESSION['ROLE']) ? '?admin' : '' ?>" class="btn btn-warning btn-sm ">EDITER</a>
+            <a href="/post/<?= $post->getId() ?>/delete<?= isset($_SESSION['ROLE']) ? '?admin' : '' ?>" class="btn btn-danger btn-sm ">SUPPRIMER</a>
         <?php endif; ?>
-        <a href="/" class="btn btn-primary mb-2">Retour à l'accueil</a>
         <h3>Commentaires :</h3>
         <?php foreach ($comments as $comment) : ?>
             <?php require('comment.php') ?>
@@ -39,8 +35,10 @@
         let hash = (window.location.hash).substring(1)
         if (hash != 'goto') {
             let com = document.getElementById(hash)
-            com.classList.remove('border-primary')
-            com.style.backgroundColor = 'rgb(12, 110, 253,0.2)'
-            com.style.fontWeight = 'bold'
+            if (com) {
+                com.classList.remove('border-primary')
+                com.style.backgroundColor = 'rgb(12, 110, 253,0.2)'
+                com.style.fontWeight = 'bold'
+            }
         }
     </script>

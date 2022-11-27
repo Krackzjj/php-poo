@@ -20,18 +20,27 @@ class SecurityController extends AbstractController
         strip_tags(extract($_POST));
         $roles = ["ROLES" => json_encode(['ROLE' => 'USER'])];
         $arr = array_merge($_POST, $roles);
+        foreach ($arr as $ar) {
+            if ($ar == null || $ar == false) {
+                $_SESSION['temp'] = $_POST;
+                header('location:/sign?error=empty',);
+                exit;
+            }
+        }
 
-
+        unset($_SESSION['temp']);
         $user = new User();
 
         $user->hydrate($arr);
 
-
-
         $userManager = new UserManager(new PDOFactory());
         $userManager->insertUser($user);
+        $lastuserid = $userManager->getLastUser()->getId();
+        $_SESSION['auth'] = $lastuserid;
+        $_SESSION['username'] = $username;
 
-        header('location: /?connect');
+
+        header('location: /');
         exit;
     }
 
@@ -50,7 +59,7 @@ class SecurityController extends AbstractController
 
 
         if (!$user) {
-            header("Location: /?error=notfound");
+            header("Location: /login?error=notfound");
             exit;
         }
 
@@ -71,7 +80,7 @@ class SecurityController extends AbstractController
     public function logout()
     {
         session_destroy();
-        header('location: /');
+        header('location: /?logout');
         exit;
     }
     #[Route('/account', name: 'account', methods: ['GET'])]
