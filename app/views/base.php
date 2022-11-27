@@ -46,9 +46,9 @@
                 <a href="/new" class="btn btn-primary">NOUVEAU</a>
                 <?php if (isset($_SESSION['ROLE']) && $_SESSION['ROLE'] == 'true') : ?>
                     <br>
-                    <a href="/posts" class="btn btn-dark">Liste des posts</a>
-                    <a href="/users" class="btn btn-dark">Liste des utilisateurs</a>
-                    <a href="/coms" class="btn btn-dark">Liste des commentaires</a>
+                    <a href="/posts" class="btn btn-dark mt-1">Liste des posts</a>
+                    <a href="/users" class="btn btn-dark mt-1">Liste des utilisateurs</a>
+                    <a href="/coms" class="btn btn-dark mt-1">Liste des commentaires</a>
                 <?php endif; ?>
             <?php else : ?>
                 <?php $uri = preg_match('/\/(sign).*/', $_SERVER['REQUEST_URI']);
