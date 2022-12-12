@@ -2,9 +2,16 @@
 
 use App\Route\Route;
 
-require_once 'vendor/autoload.php';
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Headers: authorization, content-type");
 
-$controllerDir = dirname(__FILE__) . '/src/Controller';
+if ($_SERVER['REQUEST_METHOD'] === "OPTIONS") die;
+
+
+require_once '../vendor/autoload.php';
+
+$controllerDir = dirname(__DIR__) . '/src/Controller';
 $dirs = scandir($controllerDir);
 $controllers = [];
 

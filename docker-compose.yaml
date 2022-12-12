@@ -1,14 +1,25 @@
-version: '3.1'
+version: '3.8'
 
 services:
-    php:
+    backend:
         build:
-            context: .
+            context: ./phpConf
             dockerfile: Dockerfile
         ports:
             - '1234:80'
         volumes:
             - ./app:/var/www/html
+        restart: always
+
+    frontend:
+        build:
+            context: ./reactConf
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./frontend:/project
+        command: npm start
 
     db:
         image: 'mariadb'

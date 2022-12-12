@@ -36,4 +36,10 @@ abstract class AbstractController
 
         exit;
     }
+    public function renderJSON(array $content): void
+    {
+        header('content-type: application/json');
+        echo json_encode($content);
+        exit;
+    }
 }

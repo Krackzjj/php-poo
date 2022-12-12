@@ -13,6 +13,10 @@ class UserController extends AbstractController
     {
         $manager = new UserManager(new PDOFactory());
         $user = $manager->getByUsername($username);
+
+        $this->renderJSON([
+            "username"=> $user->getUsername()
+        ]);
     }
     #[Route('/users', name: 'all-users', methods: ['GET'])]
     public function users()
